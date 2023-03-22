@@ -1,9 +1,9 @@
 package com.tradepal.TradePalApp.controller;
 
 
+import com.tradepal.TradePalApp.exception.UserNotFoundException;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.UserRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +22,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    Integer logInUser(@RequestBody User user) {
+    User logInUser(@RequestBody User user) {
         User userChecker = userRepository.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-        if(userChecker!=null) return userChecker.getToken();
-        throw new RuntimeException("User Not Found");
+        if(userChecker!=null) return userChecker;
+        throw new UserNotFoundException("User Not Found");
     }
 
     @GetMapping("/users")
