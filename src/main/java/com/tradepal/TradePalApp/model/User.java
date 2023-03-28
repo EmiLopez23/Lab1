@@ -1,10 +1,7 @@
 package com.tradepal.TradePalApp.model;
+import jakarta.persistence.*;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class User {
@@ -16,13 +13,17 @@ public class User {
     private String password;
     private String email;
 
-    private Integer token;
+    @Transient
+
+    private UUID token;
+
+    private Roles role; //1:ADMIN, 0:USER in hsql table
 
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.generateHashCode();
+        this.role = Roles.USER;
     }
 
     public User() {
@@ -57,14 +58,15 @@ public class User {
         this.email = email;
     }
 
-    public Integer getToken() {
+    public UUID getToken() {
         return token;
     }
 
-    private Integer generateHashCode(){
-        if (this.password !=null && this.username !=null && this.email !=null){
-            this.token = username.hashCode() * email.hashCode() * password.hashCode();
-        }
-        return 0;
+    public void setToken(UUID token) {
+        this.token = token;
+    }
+
+    public Roles getRole() {
+        return role;
     }
 }
