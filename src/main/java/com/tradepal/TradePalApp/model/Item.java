@@ -5,21 +5,22 @@ import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Item {
-    @Id
-    @GeneratedValue(generator = "itemIdGen",strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private String name;
-    private String description;
-    private String imgPath;
-
+    String name;
+    String category;
+    String rarity;
+    String imgPath;
     @Transient
-    private MultipartFile img;
+    MultipartFile img;
+    @Id
+    @GeneratedValue(generator = "genRLId",strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-
-    public Item(String name, String description) {
+    public Item(String name, String category, String rarity) {
         this.name = name;
-        this.description = description;
+        this.category = category;
+        this.rarity = rarity;
     }
 
     public Item() {}
@@ -32,12 +33,20 @@ public class Item {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCategory() {
+        return category;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(String rarity) {
+        this.rarity = rarity;
     }
 
     public String getImgPath() {
