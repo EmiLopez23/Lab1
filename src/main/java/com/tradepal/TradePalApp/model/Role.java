@@ -1,6 +1,6 @@
 package com.tradepal.TradePalApp.model;
 
-public enum Roles {
+public enum Role {
     USER,
     ADMIN
 }

@@ -1,8 +1,6 @@
 package com.tradepal.TradePalApp.model;
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 public class User {
     @Id
@@ -13,17 +11,14 @@ public class User {
     private String password;
     private String email;
 
-    @Transient
-
-    private UUID token;
-
-    private Roles role; //1:ADMIN, 0:USER in hsql table
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = Roles.USER;
+        this.role = Role.USER;
     }
 
     public User() {
@@ -58,15 +53,8 @@ public class User {
         this.email = email;
     }
 
-    public UUID getToken() {
-        return token;
-    }
 
-    public void setToken(UUID token) {
-        this.token = token;
-    }
-
-    public Roles getRole() {
+    public Role getRole() {
         return role;
     }
 }
