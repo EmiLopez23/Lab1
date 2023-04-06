@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface JWTGeneratorToken {
 
-    Map<String,String> generateToken(User user);
+    String generateToken(User user);
 }

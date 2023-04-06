@@ -5,6 +5,7 @@ import com.tradepal.TradePalApp.exception.UserNotFoundException;
 import com.tradepal.TradePalApp.exception.UserRegisterException;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.responses.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class UserService {
     public ResponseEntity<?> userLogin(String username, String password){
         User existingUser = userRepository.findUserByUsernameAndPassword(username,password);
         if(existingUser!=null){
-            return new ResponseEntity<>(jwtGenerator.generateToken(existingUser), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(existingUser),existingUser.getRole()), HttpStatus.OK);
         }
         else throw new UserNotFoundException("User Not Found");
 
@@ -35,7 +36,7 @@ public class UserService {
         if(userRepository.existsUserByUsername(username)) throw new UserRegisterException("Username Already Exists");
         User newUser = new User(username,password,email);
         userRepository.save(newUser);
-        return new ResponseEntity<>(jwtGenerator.generateToken(newUser), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(newUser),newUser.getRole()), HttpStatus.OK);
     }
 
 

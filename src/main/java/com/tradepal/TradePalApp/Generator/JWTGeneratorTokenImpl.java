@@ -21,18 +21,14 @@ public class JWTGeneratorTokenImpl implements JWTGeneratorToken{
 
     public static final SecretKey KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     @Override
-    public Map<String, String> generateToken(User user) {
+    public String generateToken(User user) {
         String jwtToken="";
         jwtToken = Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role",user.getRole())
                 .setIssuedAt(new Date())
                 .signWith(KEY)
                 .compact();
-        Map<String, String> jwtTokenGen = new HashMap<>();
-        jwtTokenGen.put("token", jwtToken);
-        jwtTokenGen.put("message", message);
-        return jwtTokenGen;
+        return jwtToken;
     }
 
 }
