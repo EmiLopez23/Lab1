@@ -4,18 +4,18 @@ package com.tradepal.TradePalApp.model;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Item {
-    String name;
-    String category;
-    String rarity;
-    String imgPath;
+@MappedSuperclass
+public abstract class Item {
+    private String name;
+    private String category;
+    private String rarity;
+    private String imgPath;
     @Transient
     MultipartFile img;
     @Id
-    @GeneratedValue(generator = "genRLId",strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "genId",strategy = GenerationType.SEQUENCE)
     private Long id;
+
 
     public Item(String name, String category, String rarity) {
         this.name = name;

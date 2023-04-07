@@ -1,15 +1,11 @@
 package com.tradepal.TradePalApp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class CSItem extends Item{
-    @Id
-    @GeneratedValue(generator = "genCsId",strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @Transient
+    private final String game = "CS-GO";
 
     public CSItem(String name, String category, String rarity) {
         super(name, category, rarity);
@@ -18,11 +14,9 @@ public class CSItem extends Item{
     public CSItem() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public String getGame() {
+        return game;
     }
 
-    public Long getId() {
-        return id;
-    }
 }

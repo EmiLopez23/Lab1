@@ -5,12 +5,8 @@ import jakarta.persistence.*;
 
 @Entity
 public class RLItem extends Item{
-
-    @Id
-    @GeneratedValue(generator = "genRLId",strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private String category;
-    private String rarity;
+    @Transient
+    private String game = "Rocket-League";
 
     public RLItem(String name, String category, String rarity) {
         super(name, category, rarity);
@@ -20,12 +16,7 @@ public class RLItem extends Item{
 
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getGame() {
+        return game;
     }
 }
