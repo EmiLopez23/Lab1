@@ -16,7 +16,7 @@ public class PostController {
     UserRepository userRepository;
     
     @GetMapping("/get")
-    public ResponseEntity<String> getMessage(@RequestHeader("Authorization") String token){
+    public ResponseEntity<String> getMessage(){
             return ResponseEntity.ok("Si estas aca es porque estas autorizado");
     }
 }

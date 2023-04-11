@@ -7,18 +7,20 @@ import java.util.Map;
 
 public class AuthResponse {
     String token;
-    Role userRole;
+    Role role;
 
-    public AuthResponse(String token, Role userRole) {
+    public AuthResponse(String token, Role role) {
         this.token = token;
-        this.userRole = userRole;
+        this.role = role;
     }
 
     public String getToken() {
         return token;
     }
 
-    public Role getUserRole() {
-        return userRole;
+    public Role getRole() {
+        return role;
     }
 }
+
+

@@ -31,7 +31,7 @@ public class ItemService {
         try{
             byte[] bytesImg = img.getBytes();
             String imgName = img.getOriginalFilename();
-            Path filePath = Path.of("src//main//resources//static/images/RL",imgName);
+            Path filePath = Path.of("../resources",imgName);
             Files.write(filePath,bytesImg);
             newItem.setImgPath(imgName);
 
@@ -48,7 +48,7 @@ public class ItemService {
         try{
             byte[] bytesImg = img.getBytes();
             String imgName = img.getOriginalFilename();
-            Path filePath = Path.of("src//main//resources//static/images/CS",imgName);
+            Path filePath = Path.of("../resources",imgName);
             Files.write(filePath,bytesImg);
             newItem.setImgPath(imgName);
 

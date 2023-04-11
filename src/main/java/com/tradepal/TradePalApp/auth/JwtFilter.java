@@ -39,8 +39,10 @@ public class JwtFilter extends GenericFilterBean {
                         .build()
                         .parseClaimsJws(token)
                         .getBody();
+                String userRole = claims.get("role", String.class);
                 request.setAttribute("claims", claims);
                 request.setAttribute("user", servletRequest.getParameter("id"));
+                request.setAttribute("userRole", userRole);
                 chain.doFilter(request, response);
             } catch (SignatureException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");}
