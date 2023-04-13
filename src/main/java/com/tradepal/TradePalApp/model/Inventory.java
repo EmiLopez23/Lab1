@@ -15,4 +15,5 @@ public class Inventory {
 
     @OneToOne
     private User user;
+
 }

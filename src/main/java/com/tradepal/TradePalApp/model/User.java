@@ -14,6 +14,7 @@ public class User {
     @OneToOne
     private Inventory inventory;
 
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
