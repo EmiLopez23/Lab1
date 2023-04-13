@@ -11,6 +11,9 @@ public class User {
     private String password;
     private String email;
 
+    @OneToOne
+    private Inventory inventory;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

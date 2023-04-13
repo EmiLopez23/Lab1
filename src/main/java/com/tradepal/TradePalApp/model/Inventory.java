@@ -12,4 +12,7 @@ public class Inventory {
 
     @OneToMany
     private List<Item> itemList;
+
+    @OneToOne
+    private User user;
 }
