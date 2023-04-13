@@ -4,23 +4,24 @@ package com.tradepal.TradePalApp.model;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@MappedSuperclass
-public abstract class Item {
-    private String name;
-    private String category;
-    private String rarity;
-    private String imgPath;
-    @Transient
-    MultipartFile img;
+@Entity
+public class Item {
+
     @Id
     @GeneratedValue(generator = "genId",strategy = GenerationType.SEQUENCE)
     private Long id;
+    private String name;
+    private String imgPath;
+    @Transient
+    MultipartFile img;
+
+    @ManyToOne
+    private Game game;
+
 
 
     public Item(String name, String category, String rarity) {
         this.name = name;
-        this.category = category;
-        this.rarity = rarity;
     }
 
     public Item() {}
@@ -31,22 +32,6 @@ public abstract class Item {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getRarity() {
-        return rarity;
-    }
-
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
     }
 
     public String getImgPath() {
