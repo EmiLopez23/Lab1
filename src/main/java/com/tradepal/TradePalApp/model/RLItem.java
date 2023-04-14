@@ -9,14 +9,12 @@ public class RLItem extends Item{
     private String game = "Rocket-League";
 
     public RLItem(String name, String category, String rarity) {
-        super(name, category, rarity);
+
     }
 
     public RLItem() {
 
     }
 
-    public String getGame() {
-        return game;
-    }
+
 }
