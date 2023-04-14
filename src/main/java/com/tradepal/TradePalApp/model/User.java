@@ -11,7 +11,7 @@ public class User {
     private String password;
     private String email;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
     private Inventory inventory;
 
 
@@ -60,5 +60,13 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }

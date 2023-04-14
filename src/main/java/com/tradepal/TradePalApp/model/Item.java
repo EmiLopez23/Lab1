@@ -4,6 +4,8 @@ package com.tradepal.TradePalApp.model;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Set;
+
 @Entity
 public class Item {
 
@@ -18,9 +20,11 @@ public class Item {
     @ManyToOne
     private Game game;
 
+    @ManyToMany
+    private Set<CategoryValue> categoryValues;
 
 
-    public Item(String name, String category, String rarity) {
+    public Item(String name) {
         this.name = name;
     }
 
@@ -56,5 +60,21 @@ public class Item {
 
     public Long getId() {
         return id;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Set<CategoryValue> getCategoryValues() {
+        return categoryValues;
+    }
+
+    public void setCategoryValues(Set<CategoryValue> categoryValues) {
+        this.categoryValues = categoryValues;
     }
 }
