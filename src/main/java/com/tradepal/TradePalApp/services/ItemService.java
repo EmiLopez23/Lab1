@@ -1,16 +1,15 @@
 package com.tradepal.TradePalApp.services;
 
-import com.tradepal.TradePalApp.model.CSItem;
-import com.tradepal.TradePalApp.model.RLItem;
-import com.tradepal.TradePalApp.repository.CSRepository;
-import com.tradepal.TradePalApp.repository.RLItemRepository;
+import com.tradepal.TradePalApp.model.Game;
+import com.tradepal.TradePalApp.model.Item;
+import com.tradepal.TradePalApp.repository.GameRepository;
+import com.tradepal.TradePalApp.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,31 +19,15 @@ public class ItemService {
 
 
     @Autowired
-    RLItemRepository rlRepository;
+    ItemRepository itemRepository;
 
     @Autowired
-    CSRepository csRepository;
+    GameRepository gameRepository;
 
-
-    public ResponseEntity<String> addRLItem(String name,String rarity,String category, MultipartFile img){
-        RLItem newItem = new RLItem(name,category,rarity);
-        try{
-            byte[] bytesImg = img.getBytes();
-            String imgName = img.getOriginalFilename();
-            Path filePath = Path.of("../resources",imgName);
-            Files.write(filePath,bytesImg);
-            newItem.setImgPath(imgName);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Error while loading Image",e);
-       }
-        rlRepository.save(newItem);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
-
-    public ResponseEntity<String> addCSItem(String name,String rarity,String category, MultipartFile img){
-        CSItem newItem = new CSItem(name,category,rarity);
+    public ResponseEntity<String> addItem(String name, MultipartFile img, String gameName){
+        Item newItem = new Item(name);
+        Game game = gameRepository.findGameByName(gameName);
+        newItem.setGame(game);
         try{
             byte[] bytesImg = img.getBytes();
             String imgName = img.getOriginalFilename();
@@ -55,8 +38,9 @@ public class ItemService {
         } catch (IOException e) {
             throw new RuntimeException("Error while loading Image",e);
         }
-        csRepository.save(newItem);
+        itemRepository.save(newItem);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
 }
