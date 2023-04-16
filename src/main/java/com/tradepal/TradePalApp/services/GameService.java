@@ -45,7 +45,8 @@ public class GameService {
     }
 
     public ResponseEntity<List<Category>> getGameCategories(String gameName){
-        return new ResponseEntity<>(categoryRepository.findCategoriesByGameName(gameName), HttpStatus.OK);
+        Game game = gameRepository.findGameByName(gameName);
+        return new ResponseEntity<>(game.getCategories(), HttpStatus.OK);
     }
 
 }

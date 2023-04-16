@@ -9,6 +9,4 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category,Long> {
-    @Query("SELECT c FROM Category c WHERE c.game.name = :gameName")
-    List<Category> findCategoriesByGameName(@Param("gameName") String gameName);
 }
