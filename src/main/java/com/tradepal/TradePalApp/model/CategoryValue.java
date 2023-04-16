@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class CategoryValue {
     private String value;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private Category category;
 
     public CategoryValue(String value, Category category) {

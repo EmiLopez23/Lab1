@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.controller;
 
+import com.tradepal.TradePalApp.model.Category;
 import com.tradepal.TradePalApp.model.Game;
 import com.tradepal.TradePalApp.repository.GameRepository;
 import com.tradepal.TradePalApp.requests.CategoryRequest;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -28,6 +31,9 @@ public class GameController {
 
     @PostMapping("/addCat")
     public ResponseEntity<?> addCategoryToGame(@RequestBody CategoryRequest categoryRequest){return gameService.addCategoryToGame(categoryRequest.getCategoryName(), categoryRequest.getGameName(), categoryRequest.getCategoryValues());}
+
+    @PostMapping("/getCat")
+    public ResponseEntity<List<Category>> getGameCategories(@RequestBody CategoryRequest categoryRequest){return gameService.getGameCategories(categoryRequest.getGameName());}
 
 
 }

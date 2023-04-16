@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Category {
     private List<CategoryValue> categoryValues;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private Game game;
 
     @ManyToMany

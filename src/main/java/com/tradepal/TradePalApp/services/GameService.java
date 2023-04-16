@@ -29,26 +29,23 @@ public class GameService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
-
     public ResponseEntity<String> addCategoryToGame(String categoryName, String gameName, List<String> values) {
         Game game = gameRepository.findGameByName(gameName);
         Category category = new Category(categoryName, game);
         categoryRepository.save(category);
-        List<CategoryValue> categoryValues = new ArrayList<>();
         for(String value : values){
             CategoryValue categoryValue = new CategoryValue(value, category);
-            categoryValues.add(categoryValue);
             categoryValueRepository.save(categoryValue);
         }
-        category.setCategoryValues(categoryValues);
         //List<Category> gameCategories = game.getCategories();
-        game.getCategories().add(category);
         //game.setCategories(gameCategories);
         categoryRepository.save(category);
         gameRepository.save(game);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    public ResponseEntity<List<Category>> getGameCategories(String gameName){
+        return new ResponseEntity<>(categoryRepository.findCategoriesByGameName(gameName), HttpStatus.OK);
+    }
 
 }
