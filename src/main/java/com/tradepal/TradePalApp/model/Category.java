@@ -2,6 +2,7 @@ package com.tradepal.TradePalApp.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,10 +13,10 @@ public class Category {
 
     private String name;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "category",cascade = CascadeType.PERSIST)
     private List<CategoryValue> categoryValues;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Game game;
 
     @ManyToMany
@@ -27,6 +28,13 @@ public class Category {
         this.categoryValues = categoryValues;
         this.game = game;
         this.items = items;
+    }
+
+    public Category(String name, Game game){
+        this.name = name;
+        this.game = game;
+        this.categoryValues = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
     public Category(){

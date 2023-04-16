@@ -21,7 +21,9 @@ public class Inventory {
         this.user = user;
     }
 
-    public Inventory(){}
+    public Inventory(){
+
+    }
 
     public Long getId() {
         return id;

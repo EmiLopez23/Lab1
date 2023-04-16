@@ -12,12 +12,12 @@ public class CategoryValue {
 
     private String value;
 
-    @ManyToMany
-    private List<Category> categoryList;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Category category;
 
-    public CategoryValue(String value, List<Category> categoryList) {
+    public CategoryValue(String value, Category category) {
         this.value = value;
-        this.categoryList = categoryList;
+        this.category = category;
     }
 
     public CategoryValue(){
@@ -31,12 +31,12 @@ public class CategoryValue {
         this.value = value;
     }
 
-    public List<Category> getCategoryList() {
-        return categoryList;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Long getId() {
