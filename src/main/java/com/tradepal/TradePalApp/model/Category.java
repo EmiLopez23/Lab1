@@ -21,22 +21,17 @@ public class Category {
     @JsonIgnore
     private Game game;
 
-    @ManyToMany
-    private List<Item> items;
 
-
-    public Category(String name, List<CategoryValue> categoryValues, Game game, List<Item> items) {
+    public Category(String name, List<CategoryValue> categoryValues, Game game) {
         this.name = name;
         this.categoryValues = categoryValues;
         this.game = game;
-        this.items = items;
     }
 
     public Category(String name, Game game){
         this.name = name;
         this.game = game;
         this.categoryValues = new ArrayList<>();
-        this.items = new ArrayList<>();
     }
 
     public Category(){
@@ -71,11 +66,4 @@ public class Category {
         this.game = game;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
 }

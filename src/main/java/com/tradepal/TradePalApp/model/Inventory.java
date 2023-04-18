@@ -2,6 +2,7 @@ package com.tradepal.TradePalApp.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,11 @@ public class Inventory {
         this.user = user;
     }
 
+
+    public Inventory (User user){
+        this.user = user;
+        this.itemList = new ArrayList<>();
+    }
     public Inventory(){
 
     }

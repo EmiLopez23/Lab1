@@ -23,6 +23,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = Role.USER;
+        this.inventory = new Inventory(this);
     }
 
     public User() {

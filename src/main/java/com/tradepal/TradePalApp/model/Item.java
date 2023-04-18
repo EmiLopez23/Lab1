@@ -4,7 +4,8 @@ package com.tradepal.TradePalApp.model;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -21,11 +22,18 @@ public class Item {
     private Game game;
 
     @ManyToMany
-    private Set<CategoryValue> categoryValues;
+    private List<CategoryValue> categoryValues;
 
 
     public Item(String name) {
         this.name = name;
+        this.categoryValues = new ArrayList<>();
+    }
+
+    public Item(String name, Game game){
+        this.name = name;
+        this.game = game;
+        this.categoryValues = new ArrayList<>();
     }
 
     public Item() {}
@@ -70,11 +78,11 @@ public class Item {
         this.game = game;
     }
 
-    public Set<CategoryValue> getCategoryValues() {
+    public List<CategoryValue> getCategoryValues() {
         return categoryValues;
     }
 
-    public void setCategoryValues(Set<CategoryValue> categoryValues) {
+    public void setCategoryValues(List<CategoryValue> categoryValues) {
         this.categoryValues = categoryValues;
     }
 }
