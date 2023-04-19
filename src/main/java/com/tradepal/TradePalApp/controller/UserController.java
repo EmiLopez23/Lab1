@@ -1,6 +1,9 @@
 package com.tradepal.TradePalApp.controller;
+
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.requests.UserItemRequest;
+import com.tradepal.TradePalApp.services.InventoryService;
 import com.tradepal.TradePalApp.services.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -22,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     @GetMapping("/all")
     ResponseEntity<?> getAllUsers(){
@@ -36,4 +38,9 @@ public class UserController {
         return new ResponseEntity<>(user.getInventory().getItemList(),HttpStatus.OK);
     }
 
+
+    @PostMapping("inventory/addItem")
+    ResponseEntity<?> addItemtoInventory(@RequestBody UserItemRequest userItemRequest){
+        return inventoryService.addItemtoUserInventory(userItemRequest.getUserId(), userItemRequest.getItemId(), userItemRequest.getQuantity());
+    }
 }

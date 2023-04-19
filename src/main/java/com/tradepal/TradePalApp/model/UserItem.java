@@ -10,16 +10,16 @@ public class UserItem {
     private Long id;
 
     @ManyToOne
-    private Game game;
-
-    @ManyToOne
     private Inventory inventory;
 
     private int quantity;
 
-    public UserItem(Game game, Inventory inventory, int quantity) {
-        this.game = game;
+    @ManyToOne
+    private Item item;
+
+    public UserItem(Inventory inventory, Item item, int quantity) {
         this.inventory = inventory;
+        this.item = item;
         this.quantity = quantity;
     }
 
@@ -29,20 +29,20 @@ public class UserItem {
         return id;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public Inventory getInventory() {
         return inventory;
     }
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getQuantity() {
