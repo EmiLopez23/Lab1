@@ -1,9 +1,8 @@
 package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.model.Category;
-import com.tradepal.TradePalApp.model.Game;
 import com.tradepal.TradePalApp.repository.GameRepository;
-import com.tradepal.TradePalApp.requests.CategoryRequest;
+import com.tradepal.TradePalApp.requests.GameRequest;
 import com.tradepal.TradePalApp.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +26,10 @@ public class GameController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addGame(@RequestBody Game game){return gameService.addGame(game.getName()); }
-
-    @PostMapping("/addCat")
-    public ResponseEntity<?> addCategoryToGame(@RequestBody CategoryRequest categoryRequest){return gameService.addCategoryToGame(categoryRequest.getCategoryName(), categoryRequest.getGameName(), categoryRequest.getCategoryValues());}
+    public ResponseEntity<?> addGame(@RequestBody GameRequest gameRequest){return gameService.addGame(gameRequest.getGame(), gameRequest.getInputValues()); }
 
     @PostMapping("/getCat")
-    public ResponseEntity<List<Category>> getGameCategories(@RequestBody CategoryRequest categoryRequest){return gameService.getGameCategories(categoryRequest.getGameName());}
+    public ResponseEntity<List<Category>> getGameCategories(@RequestBody GameRequest gameRequest){return gameService.getGameCategories(gameRequest.getGame());}
 
 
 }

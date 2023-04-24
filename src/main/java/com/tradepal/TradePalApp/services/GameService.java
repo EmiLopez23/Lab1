@@ -6,12 +6,12 @@ import com.tradepal.TradePalApp.model.Game;
 import com.tradepal.TradePalApp.repository.CategoryRepository;
 import com.tradepal.TradePalApp.repository.CategoryValueRepository;
 import com.tradepal.TradePalApp.repository.GameRepository;
+import com.tradepal.TradePalApp.requests.GameRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,24 +23,18 @@ public class GameService {
     @Autowired
     CategoryValueRepository categoryValueRepository;
 
-    public ResponseEntity<String> addGame(String gameName){
+    public ResponseEntity<String> addGame(String gameName, List<GameRequest.CategoryRequest> categories){
         Game game = new Game(gameName);
         gameRepository.save(game);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    public ResponseEntity<String> addCategoryToGame(String categoryName, String gameName, List<String> values) {
-        Game game = gameRepository.findGameByName(gameName);
-        Category category = new Category(categoryName, game);
-        categoryRepository.save(category);
-        for(String value : values){
-            CategoryValue categoryValue = new CategoryValue(value, category);
-            categoryValueRepository.save(categoryValue);
+        for(GameRequest.CategoryRequest categoryRequest: categories){
+            Category category = new Category(categoryRequest.getCategory(),game);
+            String[] valueNames = categoryRequest.getValues().split(",");
+            categoryRepository.save(category);
+            for(String valueName : valueNames){
+                CategoryValue categoryValue = new CategoryValue(valueName, category);
+                categoryValueRepository.save(categoryValue);
+            }
         }
-        //List<Category> gameCategories = game.getCategories();
-        //game.setCategories(gameCategories);
-        categoryRepository.save(category);
-        gameRepository.save(game);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
