@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -27,7 +26,7 @@ public class ItemController {
 
     @PostMapping("item/add")
     public ResponseEntity<String> addItem(@RequestBody ItemRequest itemRequest){
-        return itemService.addItem(itemRequest.getName(),itemRequest.getGame(), itemRequest.getValuesId());
+        return itemService.addItem(itemRequest.getName(),itemRequest.getGame(), itemRequest.getValuesId(), itemRequest.getImg());
     }
 
 

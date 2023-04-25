@@ -2,6 +2,7 @@ package com.tradepal.TradePalApp.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,7 @@ public class Post {
     public Post(User user, Game game) {
         this.user = user;
         this.game = game;
+        this.tradeItems = new ArrayList<>();
     }
 
     public Post() {

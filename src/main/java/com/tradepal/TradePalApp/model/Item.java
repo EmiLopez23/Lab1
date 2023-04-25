@@ -30,10 +30,11 @@ public class Item {
         this.categoryValues = new ArrayList<>();
     }
 
-    public Item(String name, Game game){
+    public Item(String name, Game game, MultipartFile img){
         this.name = name;
         this.game = game;
         this.categoryValues = new ArrayList<>();
+        this.img = img;
     }
 
     public Item() {}

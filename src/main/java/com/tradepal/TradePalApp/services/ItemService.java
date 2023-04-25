@@ -30,12 +30,12 @@ public class ItemService {
     @Autowired
     CategoryValueRepository categoryValueRepository;
 
-    public ResponseEntity<String> addItem(String name, String gameName, List<Long> valuesId){ //missing MultipartFile img
+    public ResponseEntity<String> addItem(String name, String gameName, List<Long> valuesId, MultipartFile img){ //missing MultipartFile img
         Game game = gameRepository.findGameByName(gameName);
-        Item newItem = new Item(name, game);
+        Item newItem = new Item(name, game, img);
         List<CategoryValue> values = categoryValueRepository.findAllById(valuesId);
         newItem.getCategoryValues().addAll(values);
-        /**try{
+        try{
             byte[] bytesImg = img.getBytes();
             String imgName = img.getOriginalFilename();
             Path filePath = Path.of("../resources",imgName);
@@ -44,7 +44,7 @@ public class ItemService {
 
         } catch (IOException e) {
             throw new RuntimeException("Error while loading Image",e);
-        }**/
+        }
         itemRepository.save(newItem);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
