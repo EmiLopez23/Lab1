@@ -25,7 +25,7 @@ public class GameController {
         return new ResponseEntity<>(gameRepository.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add") //cambio
     public ResponseEntity<?> addGame(@RequestBody GameRequest gameRequest){return gameService.addGame(gameRequest.getGame(), gameRequest.getInputValues()); }
 
     @PostMapping("/getCat")
