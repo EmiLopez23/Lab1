@@ -35,7 +35,7 @@ public class ItemService {
     public ResponseEntity<String> addItem(String name, String gameName, List<String> valuesName, MultipartFile img){ //missing MultipartFile img
         Game game = gameRepository.findGameByName(gameName);
         Item newItem = new Item(name, game);
-        List<CategoryValue> values = categoryValueRepository.findAllByName(valuesName);
+        List<CategoryValue> values = categoryValueRepository.findAllByNameIn(valuesName);
         newItem.getCategoryValues().addAll(values);
         try{
             byte[] bytesImg = img.getBytes();
