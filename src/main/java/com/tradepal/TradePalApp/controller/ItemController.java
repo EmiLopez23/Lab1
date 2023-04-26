@@ -26,7 +26,7 @@ public class ItemController {
 
     @PostMapping("item/add")
     public ResponseEntity<String> addItem(@RequestBody ItemRequest itemRequest){
-        return itemService.addItem(itemRequest.getName(),itemRequest.getGame(), itemRequest.getValuesId()/*itemRequest.getImg()*/);
+        return itemService.addItem(itemRequest.getName(),itemRequest.getGame(), itemRequest.getValuesId(),itemRequest.getImg());
     }
 
 

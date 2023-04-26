@@ -8,14 +8,14 @@ public class ItemRequest {
 
     String name;
     String game;
-    List<Long> valuesId;
-    //MultipartFile img;
+    List<String> valuesId;
+    MultipartFile img;
 
-    public ItemRequest(String name, String game, List<Long> valuesId /*MultipartFile img*/) {
+    public ItemRequest(String name, String game, List<String> valuesId, MultipartFile img) {
         this.name = name;
         this.game = game;
         this.valuesId = valuesId;
-        //this.img = img;
+        this.img = img;
     }
 
 
@@ -27,11 +27,11 @@ public class ItemRequest {
         return game;
     }
 
-    public List<Long> getValuesId() {
+    public List<String> getValuesId() {
         return valuesId;
     }
 
-    //public MultipartFile getImg() {
-    //    return img;
-    //}
+    public MultipartFile getImg() {
+        return img;
+    }
 }

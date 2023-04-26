@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,21 +32,21 @@ public class ItemService {
     @Autowired
     CategoryValueRepository categoryValueRepository;
 
-    public ResponseEntity<String> addItem(String name, String gameName, List<Long> valuesId/*MultipartFile img*/){ //missing MultipartFile img
+    public ResponseEntity<String> addItem(String name, String gameName, List<String> valuesName, MultipartFile img){ //missing MultipartFile img
         Game game = gameRepository.findGameByName(gameName);
         Item newItem = new Item(name, game);
-        List<CategoryValue> values = categoryValueRepository.findAllById(valuesId);
+        List<CategoryValue> values = categoryValueRepository.findAllByName(valuesName);
         newItem.getCategoryValues().addAll(values);
-//        try{
-//            byte[] bytesImg = img.getBytes();
-//            String imgName = img.getOriginalFilename();
-//            Path filePath = Path.of("../resources",imgName);
-//            Files.write(filePath,bytesImg);
-//            newItem.setImgPath(imgName);
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException("Error while loading Image",e);
-//        }
+        try{
+            byte[] bytesImg = img.getBytes();
+            String imgName = img.getOriginalFilename();
+            Path filePath = Path.of("../resources",imgName);
+            Files.write(filePath,bytesImg);
+            newItem.setImgPath(imgName);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error while loading Image",e);
+        }
         itemRepository.save(newItem);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
