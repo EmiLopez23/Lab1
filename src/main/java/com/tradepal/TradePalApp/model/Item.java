@@ -1,6 +1,7 @@
 package com.tradepal.TradePalApp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,7 @@ public class Item {
     MultipartFile img;
 
     @ManyToOne
+    @JsonIgnore
     private Game game;
 
     @ManyToMany
@@ -40,6 +42,7 @@ public class Item {
     public Item(String name, Game game) {
         this.name = name;
         this.game = game;
+        this.categoryValues= new ArrayList<>();
     }
 
     public Item() {}

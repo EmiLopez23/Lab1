@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Game {
     private List<Category> categories;
 
     @OneToMany(mappedBy = "game")
+
     private List<Item> itemList;
 
 

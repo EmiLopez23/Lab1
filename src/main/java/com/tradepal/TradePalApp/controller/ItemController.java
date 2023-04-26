@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @RestController
@@ -19,14 +22,14 @@ public class ItemController {
     ItemService itemService;
 
     /*@PostMapping("item/add")
-    public ResponseEntity<String> addItem(@RequestParam("name") String name, @RequestParam("img")MultipartFile img, @RequestParam("game")String gameName){
+    public ResponseEntity<String> addItem(){
         //return itemService.addItem(name, img, gameName);
         return null;
     }*/
 
     @PostMapping("item/add")
-    public ResponseEntity<String> addItem(@RequestBody ItemRequest itemRequest){
-        return itemService.addItem(itemRequest.getName(),itemRequest.getGame(), itemRequest.getValuesId(),itemRequest.getImg());
+    public ResponseEntity<String> addItem(@RequestParam("name") String name, @RequestParam("img") MultipartFile img, @RequestParam("game")String gameName,@RequestParam("valuesId") List<String> valuesId){
+        return itemService.addItem(name,gameName, valuesId,img);
     }
 
 
