@@ -26,6 +26,7 @@ public class JWTGeneratorTokenImpl implements JWTGeneratorToken{
         jwtToken = Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("role",user.getRole())
+                .claim("id",user.getId())
                 .setIssuedAt(new Date())
                 .signWith(KEY)
                 .compact();

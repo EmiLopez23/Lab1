@@ -40,7 +40,9 @@ public class UserController {
 
 
     @PostMapping("inventory/addItem")
-    ResponseEntity<?> addItemtoInventory(@RequestBody UserItemRequest userItemRequest){
-        return inventoryService.addItemtoUserInventory(userItemRequest.getUserId(), userItemRequest.getItemId(), userItemRequest.getQuantity());
+    ResponseEntity<?> addItemtoInventory(HttpServletRequest request, @RequestBody UserItemRequest userItemRequest){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return inventoryService.addItemtoUserInventory(userId, userItemRequest.getItemId(), userItemRequest.getQuantity());
     }
 }
