@@ -9,13 +9,13 @@ public class ItemRequest {
     String name;
     String game;
     List<Long> valuesId;
-    MultipartFile img;
+    //MultipartFile img;
 
-    public ItemRequest(String name, String game, List<Long> valuesId, MultipartFile img) {
+    public ItemRequest(String name, String game, List<Long> valuesId /*MultipartFile img*/) {
         this.name = name;
         this.game = game;
         this.valuesId = valuesId;
-        this.img = img;
+        //this.img = img;
     }
 
 
@@ -31,7 +31,7 @@ public class ItemRequest {
         return valuesId;
     }
 
-    public MultipartFile getImg() {
-        return img;
-    }
+    //public MultipartFile getImg() {
+    //    return img;
+    //}
 }

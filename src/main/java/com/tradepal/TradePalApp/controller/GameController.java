@@ -1,6 +1,7 @@
 package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.model.Category;
+import com.tradepal.TradePalApp.model.Game;
 import com.tradepal.TradePalApp.repository.GameRepository;
 import com.tradepal.TradePalApp.requests.GameRequest;
 import com.tradepal.TradePalApp.services.GameService;
@@ -25,11 +26,10 @@ public class GameController {
         return new ResponseEntity<>(gameRepository.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/add") //cambio
+    @PostMapping("/add")
     public ResponseEntity<?> addGame(@RequestBody GameRequest gameRequest){return gameService.addGame(gameRequest.getGame(), gameRequest.getInputValues()); }
 
     @PostMapping("/getCat")
     public ResponseEntity<List<Category>> getGameCategories(@RequestBody GameRequest gameRequest){return gameService.getGameCategories(gameRequest.getGame());}
-
 
 }

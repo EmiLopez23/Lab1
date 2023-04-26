@@ -37,6 +37,11 @@ public class Item {
         this.img = img;
     }
 
+    public Item(String name, Game game) {
+        this.name = name;
+        this.game = game;
+    }
+
     public Item() {}
 
     public String getName() {
