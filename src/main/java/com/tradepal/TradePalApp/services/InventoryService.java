@@ -1,10 +1,10 @@
 package com.tradepal.TradePalApp.services;
 
 import com.tradepal.TradePalApp.exception.UserNotFoundException;
+import com.tradepal.TradePalApp.model.Inventory;
 import com.tradepal.TradePalApp.model.Item;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.model.UserItem;
-import com.tradepal.TradePalApp.repository.InventoryRepository;
 import com.tradepal.TradePalApp.repository.ItemRepository;
 import com.tradepal.TradePalApp.repository.UserItemRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
@@ -33,10 +33,19 @@ public class InventoryService {
         if(optionalUser.isPresent() && optionalItem.isPresent()){
             User user = optionalUser.get();
             Item item = optionalItem.get();
-            UserItem userItem = new UserItem(user.getInventory(), item, quantity);
-            userItemRepository.save(userItem);
+            Inventory inventory = user.getInventory();
+            UserItem itemCheck = userItemRepository.getUserItemByInventory(inventory);
+            if(itemCheck != null){
+                itemCheck.setQuantity(itemCheck.getQuantity() + quantity);
+                userItemRepository.save(itemCheck);
+            }
+            else{
+                UserItem userItem = new UserItem(inventory, item, quantity);
+                userItemRepository.save(userItem);
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        else throw new UserNotFoundException("user not found");
+        else throw new UserNotFoundException("user or item not found");
     }
+
 }
