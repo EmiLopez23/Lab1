@@ -34,7 +34,7 @@ public class InventoryService {
             User user = optionalUser.get();
             Item item = optionalItem.get();
             Inventory inventory = user.getInventory();
-            UserItem itemCheck = userItemRepository.getUserItemByInventory(inventory);
+            UserItem itemCheck = userItemRepository.getUserItemByItem(item);
             if(itemCheck != null){
                 itemCheck.setQuantity(itemCheck.getQuantity() + quantity);
                 userItemRepository.save(itemCheck);
