@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +11,7 @@ public class UserItem {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Inventory inventory;
 
     private int quantity;
