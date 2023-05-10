@@ -32,10 +32,10 @@ public class ItemService {
     @Autowired
     CategoryValueRepository categoryValueRepository;
 
-    public ResponseEntity<String> addItem(String name, String gameName, List<String> valuesName, MultipartFile img){ //missing MultipartFile img
+    public ResponseEntity<String> addItem(String name, String gameName, List<Long> valuesName, MultipartFile img){ //missing MultipartFile img
         Game game = gameRepository.findGameByName(gameName);
         Item newItem = new Item(name, game);
-        List<CategoryValue> values = categoryValueRepository.findAllByValueIn(valuesName);
+        List<CategoryValue> values = categoryValueRepository.findAllById(valuesName);
         newItem.getCategoryValues().addAll(values);
         try{
             byte[] bytesImg = img.getBytes();
