@@ -34,15 +34,16 @@ public class InventoryService {
             User user = optionalUser.get();
             Item item = optionalItem.get();
             Inventory inventory = user.getInventory();
-            UserItem itemCheck = userItemRepository.getUserItemByItem(item);
-            if(itemCheck != null){
-                itemCheck.setQuantity(itemCheck.getQuantity() + quantity);
-                userItemRepository.save(itemCheck);
+            Optional<UserItem> itemCheck = userItemRepository.findUserItemByItemAndInventory(item, inventory);
+            UserItem userItem;
+            if(itemCheck.isPresent()){
+                userItem = itemCheck.get();
+                userItem.setQuantity(userItem.getQuantity() + quantity);
             }
             else{
-                UserItem userItem = new UserItem(inventory, item, quantity);
-                userItemRepository.save(userItem);
+                userItem = new UserItem(inventory, item, quantity);
             }
+            userItemRepository.save(userItem);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else throw new UserNotFoundException("user or item not found");
