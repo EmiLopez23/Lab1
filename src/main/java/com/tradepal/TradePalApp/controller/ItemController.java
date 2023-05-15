@@ -28,7 +28,7 @@ public class ItemController {
     }*/
 
     @PostMapping("item/add")
-    public ResponseEntity<String> addItem(@RequestParam("name") String name, @RequestParam("img") MultipartFile img, @RequestParam("game")String gameName,@RequestParam("valuesId") List<String> valuesId){
+    public ResponseEntity<String> addItem(@RequestParam("name") String name, @RequestParam("img") MultipartFile img, @RequestParam("game")String gameName,@RequestParam("valuesId") List<Long> valuesId){
         return itemService.addItem(name,gameName, valuesId,img);
     }
 

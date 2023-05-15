@@ -17,6 +17,7 @@ public class PostItem {
     @ManyToOne
     private Item item;
 
+    @Enumerated(EnumType.STRING)
     private TradeDirection tradeDirection;
 
     private int quantity;
