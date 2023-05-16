@@ -20,7 +20,6 @@ public class Item {
     MultipartFile img;
 
     @ManyToOne
-    @JsonIgnore
     private Game game;
 
     @ManyToMany
