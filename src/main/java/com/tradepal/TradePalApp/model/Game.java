@@ -18,7 +18,7 @@ public class Game {
     private List<Category> categories;
 
     @OneToMany(mappedBy = "game")
-
+    @JsonIgnore
     private List<Item> itemList;
 
 
