@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/post")
@@ -41,4 +39,12 @@ public class PostController {
         Long userId = Long.parseLong(claims.get("id").toString());
         return postService.createPost(userId, postRequest.getGameName(), postRequest.getOfferedItems(), postRequest.getWantedItems());
     }
+
+    @PostMapping("/create-invite")
+    public ResponseEntity<String> createInvite(HttpServletRequest request, @RequestParam Long postId){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return postService.createTradeInvite(userId, postId);
+    }
+
 }
