@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.controller;
 
+import com.tradepal.TradePalApp.repository.PostRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
 import com.tradepal.TradePalApp.requests.PostRequest;
 import com.tradepal.TradePalApp.services.PostService;
@@ -20,10 +21,18 @@ public class PostController {
     UserRepository userRepository;
     @Autowired
     PostService postService;
+
+    @Autowired
+    PostRepository postRepository;
     
     @GetMapping("/get")
     public ResponseEntity<String> getMessage(){
             return ResponseEntity.ok("Si estas aca es porque estas autorizado");
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> findAllPosts(){
+        return new ResponseEntity<>(postRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/create-post")
