@@ -1,4 +1,5 @@
 package com.tradepal.TradePalApp.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class User {
     private String email;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Inventory inventory;
 
 

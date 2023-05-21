@@ -1,6 +1,5 @@
 package com.tradepal.TradePalApp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ public class Post {
     private Long id;
 
     @ManyToOne
-    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "post")
