@@ -3,11 +3,13 @@ package com.tradepal.TradePalApp.services;
 import com.tradepal.TradePalApp.model.*;
 import com.tradepal.TradePalApp.repository.*;
 import com.tradepal.TradePalApp.requests.PostRequest;
+import com.tradepal.TradePalApp.responses.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,5 +46,15 @@ public class PostService {
             postItemRepository.save(postItem);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+    public ResponseEntity<?> getAllPosts(){
+        List<Post> posts = postRepository.findAll();
+        List<PostResponse> postsResponse = new ArrayList<>();
+        for (Post post : posts) {
+            postsResponse.add(new PostResponse(post));
+        }
+        return new ResponseEntity<>(postsResponse,HttpStatus.OK);
     }
 }
