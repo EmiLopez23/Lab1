@@ -28,25 +28,25 @@ public class InventoryService {
     private ItemRepository itemRepository;
 
     public ResponseEntity<?> addItemtoUserInventory(Long userId, Long itemId, int quantity){
-        Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if(optionalUser.isPresent() && optionalItem.isPresent()){
-            User user = optionalUser.get();
-            Item item = optionalItem.get();
-            Inventory inventory = user.getInventory();
-            Optional<UserItem> itemCheck = userItemRepository.findUserItemByItemAndInventory(item, inventory);
-            UserItem userItem;
-            if(itemCheck.isPresent()){
-                userItem = itemCheck.get();
-                userItem.setQuantity(userItem.getQuantity() + quantity);
-            }
-            else{
-                userItem = new UserItem(inventory, item, quantity);
-            }
-            userItemRepository.save(userItem);
-            return new ResponseEntity<>(HttpStatus.OK);
+        User user = userRepository.getReferenceById(userId);
+        Item item = itemRepository.getReferenceById(itemId);
+        Inventory inventory = user.getInventory();
+        itemAddQuantity(inventory, item, quantity);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    public void itemAddQuantity(Inventory inventory, Item item, int quantity){
+        Optional<UserItem> itemCheck = userItemRepository.findUserItemByItemAndInventory(item, inventory);
+        UserItem userItem;
+        if(itemCheck.isPresent()){
+            userItem = itemCheck.get();
+            userItem.setQuantity(userItem.getQuantity() + quantity);
         }
-        else throw new UserNotFoundException("user or item not found");
+        else{
+            userItem = new UserItem(inventory, item, quantity);
+        }
+        userItemRepository.save(userItem);
     }
 
 }

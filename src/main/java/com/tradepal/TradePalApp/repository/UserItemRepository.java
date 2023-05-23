@@ -11,4 +11,5 @@ public interface UserItemRepository extends JpaRepository<UserItem, Long> {
     UserItem getUserItemByInventory(Inventory inventory);
     UserItem getUserItemByItem(Item item);
     Optional<UserItem> findUserItemByItemAndInventory(Item item, Inventory inventory);
+    UserItem getUserItemByItemAndInventory(Item item, Inventory inventory);
 }

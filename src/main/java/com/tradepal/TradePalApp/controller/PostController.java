@@ -41,10 +41,15 @@ public class PostController {
     }
 
     @PostMapping("/create-invite")
-    public ResponseEntity<String> createInvite(HttpServletRequest request, @RequestParam Long postId){
+    public ResponseEntity<String> createInvite(HttpServletRequest request, @RequestParam("postId") Long postId){
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
         return postService.createTradeInvite(userId, postId);
+    }
+
+    @PostMapping("/accept-invite")
+    public ResponseEntity<String> acceptInvite(@RequestParam("inviteId") Long inviteId){
+        return postService.confirmTrade(inviteId);
     }
 
 }
