@@ -1,13 +1,13 @@
 package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.repository.PostRepository;
-import com.tradepal.TradePalApp.repository.TradeInviteRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
 import com.tradepal.TradePalApp.requests.PostRequest;
 import com.tradepal.TradePalApp.services.PostService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +22,6 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
-
-    @Autowired
-    TradeInviteRepository tradeInviteRepository;
     
     @GetMapping("/get")
     public ResponseEntity<String> getMessage(){
@@ -33,7 +30,7 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<?> findAllPosts(){
-        return postService.getAllPosts();
+        return new ResponseEntity<>(postRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/create-post")
@@ -55,11 +52,4 @@ public class PostController {
         return postService.confirmTrade(inviteId);
     }
 
-
-    @GetMapping("/all-invites")
-    public ResponseEntity<?> getMyInvites(HttpServletRequest request){
-        Claims claims = (Claims) request.getAttribute("claims");
-        Long userId = Long.parseLong(claims.get("id").toString());
-        return postService.getTradeInvites(userId);
-    }
 }
