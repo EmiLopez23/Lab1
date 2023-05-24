@@ -16,16 +16,14 @@ public class TradeInvite {
     @ManyToOne
     private User requester;
 
-    @ManyToOne
-    private User creator;
+
 
 
     boolean accepted;
 
-    public TradeInvite(Post post, User requester, User creator) {
+    public TradeInvite(Post post, User requester) {
         this.post = post;
         this.requester = requester;
-        this.creator = creator;
         this.accepted = false;
     }
 
@@ -36,13 +34,14 @@ public class TradeInvite {
         return post;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public User getRequester() {
         return requester;
     }
 
-    public User getCreator() {
-        return creator;
-    }
 
     public boolean isAccepted() {
         return accepted;

@@ -4,6 +4,7 @@ import com.tradepal.TradePalApp.model.*;
 import com.tradepal.TradePalApp.repository.*;
 import com.tradepal.TradePalApp.requests.PostRequest;
 import com.tradepal.TradePalApp.responses.PostResponse;
+import com.tradepal.TradePalApp.responses.TradeInviteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,8 +72,7 @@ public class PostService {
     public ResponseEntity<String> createTradeInvite(Long interestedId, Long postId){
         User interested = userRepository.getReferenceById(interestedId);
         Post post = postRepository.getReferenceById(postId);
-        User postCreator = post.getUser();
-        TradeInvite tradeInvite = new TradeInvite(post, interested, postCreator);
+        TradeInvite tradeInvite = new TradeInvite(post, interested);
         tradeInviteRepository.save(tradeInvite);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -87,7 +87,7 @@ public class PostService {
 
     public void tradeItems(TradeInvite tradeInvite){
         Post post = tradeInvite.getPost();
-        User postCreator = tradeInvite.getCreator();
+        User postCreator = tradeInvite.getPost().getUser();
         User trader = tradeInvite.getRequester();
         List<PostItem> itemsTraded = post.getTradeItems();
         for(PostItem postItem : itemsTraded){
@@ -113,5 +113,14 @@ public class PostService {
                 userItemRepository.save(itemOut);
             }
         }
+    }
+
+    public ResponseEntity<?> getTradeInvites(Long userId){
+        List<TradeInvite> tradeInvites = tradeInviteRepository.getTradeInviteByPostCreator(userId);
+        List<TradeInviteResponse> tradeInviteResponses = new ArrayList<>();
+        for(TradeInvite tradeInvite : tradeInvites){
+            tradeInviteResponses.add(new TradeInviteResponse(tradeInvite));
+        }
+        return new ResponseEntity<>(tradeInviteResponses, HttpStatus.OK);
     }
 }
