@@ -40,8 +40,8 @@ public class PostController {
         return postService.createPost(userId, postRequest.getGameName(), postRequest.getOfferedItems(), postRequest.getWantedItems());
     }
 
-    @PostMapping("/create-invite")
-    public ResponseEntity<String> createInvite(HttpServletRequest request, @RequestParam("postId") Long postId){
+    @PostMapping("/create-invite/{postId}")
+    public ResponseEntity<String> createInvite(HttpServletRequest request, @PathVariable Long postId){
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
         return postService.createTradeInvite(userId, postId);
