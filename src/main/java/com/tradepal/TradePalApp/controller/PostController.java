@@ -30,7 +30,7 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<?> findAllPosts(){
-        return new ResponseEntity<>(postRepository.findAll(), HttpStatus.OK);
+        return postService.getAllPosts();
     }
 
     @PostMapping("/create-post")
@@ -45,11 +45,6 @@ public class PostController {
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
         return postService.createTradeInvite(userId, postId);
-    }
-
-    @PostMapping("/accept-invite")
-    public ResponseEntity<String> acceptInvite(@RequestParam("inviteId") Long inviteId){
-        return postService.confirmTrade(inviteId);
     }
 
 }
