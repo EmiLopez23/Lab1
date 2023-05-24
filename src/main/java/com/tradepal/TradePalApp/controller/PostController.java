@@ -47,8 +47,8 @@ public class PostController {
         return postService.createTradeInvite(userId, postId);
     }
 
-    @PostMapping("/accept-invite")
-    public ResponseEntity<String> acceptInvite(@RequestParam("inviteId") Long inviteId){
+    @PostMapping("/accept-invite/{inviteId}")
+    public ResponseEntity<String> acceptInvite(@PathVariable Long inviteId){
         return postService.confirmTrade(inviteId);
     }
 
