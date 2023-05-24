@@ -30,7 +30,7 @@ public class UserService {
     public ResponseEntity<?> userLogin(String username, String password){
         User existingUser = userRepository.findUserByUsernameAndPassword(username,password);
         if(existingUser!=null){
-            return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(existingUser), existingUser.getRole()), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(existingUser), existingUser.getRole(), existingUser.getUsername()), HttpStatus.OK);
         }
         else throw new UserNotFoundException("User Not Found");
 
@@ -43,6 +43,6 @@ public class UserService {
         userRepository.save(newUser);
         Inventory newInventory = new Inventory(newUser);
         inventoryRepository.save(newInventory);
-        return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(newUser),newUser.getRole()), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(newUser),newUser.getRole(), newUser.getUsername()), HttpStatus.OK);
     }
 }

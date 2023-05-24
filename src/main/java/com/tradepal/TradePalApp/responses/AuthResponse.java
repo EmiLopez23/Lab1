@@ -9,9 +9,12 @@ public class AuthResponse {
     String token;
     Role role;
 
-    public AuthResponse(String token, Role role) {
+    String username;
+
+    public AuthResponse(String token, Role role, String username) {
         this.token = token;
         this.role = role;
+        this.username = username;
     }
 
     public String getToken() {
@@ -21,6 +24,8 @@ public class AuthResponse {
     public Role getRole() {
         return role;
     }
+
+    public String getUsername(){return username;}
 }
 
 
