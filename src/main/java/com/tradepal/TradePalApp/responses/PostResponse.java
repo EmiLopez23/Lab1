@@ -6,15 +6,22 @@ import com.tradepal.TradePalApp.model.PostItem;
 import java.util.List;
 
 public class PostResponse {
+
+    Long id;
     String username;
     String gameName;
     List<PostItem> tradeItems;
 
     public PostResponse(Post post){
+        this.id = post.getId();
         this.username = post.getUser().getUsername();
         this.gameName = post.getGame().getName();
         this.tradeItems = post.getTradeItems();
 
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUsername() {
