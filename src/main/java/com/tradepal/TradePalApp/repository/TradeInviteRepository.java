@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TradeInviteRepository extends JpaRepository<TradeInvite, Long> {
 
-    @Query("SELECT ti FROM TradeInvite ti WHERE ti.post.id = (SELECT p.id FROM Post p WHERE p.user.id = ?1 )")
+    @Query("SELECT ti FROM TradeInvite ti WHERE ti.post.id IN (SELECT p.id FROM Post p WHERE p.user.id = ?1 )")
     List<TradeInvite> getTradeInviteByPostCreator(Long userId);
 }
