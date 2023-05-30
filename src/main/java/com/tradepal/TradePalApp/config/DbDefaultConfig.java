@@ -18,8 +18,9 @@ public class DbDefaultConfig {
 
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository, InventoryRepository inventoryRepository, GameRepository
-                                   gameRepository, CategoryRepository categoryRepository, CategoryValueRepository categoryValueRepository, ItemRepository itemRepository){
+            gameRepository, CategoryRepository categoryRepository, CategoryValueRepository categoryValueRepository, ItemRepository itemRepository) {
         return args -> {
+            /**
             User user1 = new User("bangui", "Bangui1", "bangui@bangui.com", Role.USER);
             User user2 = new User("admin", "admin1", "admin@admin.com", Role.ADMIN);
             User user3 = new User("emi", "Emi1", "emi@emi.com", Role.USER);
@@ -42,19 +43,20 @@ public class DbDefaultConfig {
             inventoryRepository.save(inventory4);
 
             Game game1 = new Game("CS:GO");
-            //Game game2 = new Game("Rocket League");
+            Game game2 = new Game("Rocket League");
             Game game3 = new Game("Team Fortress 2");
 
             gameRepository.save(game1);
-            //gameRepository.save(game2);
+            gameRepository.save(game2);
             gameRepository.save(game3);
+
 
             Category category1 = new Category("Type", game1);
             Category category2 = new Category("Quality", game1);
             Category category3 = new Category("Exterior", game1);
 
-            //Category category4 = new Category("Type", game2);
-            //Category category5 = new Category("Rarity", game2);
+            Category category4 = new Category("Type", game2);
+            Category category5 = new Category("Rarity", game2);
 
             Category category6 = new Category("Type", game3);
             Category category7 = new Category("Class", game3);
@@ -64,8 +66,8 @@ public class DbDefaultConfig {
             categoryRepository.save(category1);
             categoryRepository.save(category2);
             categoryRepository.save(category3);
-            //categoryRepository.save(category4);
-            //categoryRepository.save(category5);
+            categoryRepository.save(category4);
+            categoryRepository.save(category5);
             categoryRepository.save(category6);
             categoryRepository.save(category7);
             categoryRepository.save(category8);
@@ -75,8 +77,8 @@ public class DbDefaultConfig {
             categories.add(category1);
             categories.add(category2);
             categories.add(category3);
-            //categories.add(category4);
-            //categories.add(category5);
+            categories.add(category4);
+            categories.add(category5);
             categories.add(category6);
             categories.add(category7);
             categories.add(category8);
@@ -87,8 +89,8 @@ public class DbDefaultConfig {
             valueLists.add(new ArrayList<>(Arrays.asList("Consumer Grade", "Industrial Grade", "Mil-spec", "Restricted", "Classified", "Covert", "Exceedingly Rare", "Contraband")));
             valueLists.add(new ArrayList<>(Arrays.asList("Battle-Scarred", "Well-Worn", "Field-Tested", "Minimal Wear", "Factory New")));
 
-            //valueLists.add(new ArrayList<>(Arrays.asList("Antenna", "Body", "Boost", "Paint Job", "Goal Explosion", "Engine")));
-            //valueLists.add(new ArrayList<>(Arrays.asList("Common", "Uncommon", "Rare", "Very Rare", "Import", "Black Market")));
+            valueLists.add(new ArrayList<>(Arrays.asList("Antenna", "Body", "Boost", "Paint Job", "Goal Explosion", "Engine")));
+            valueLists.add(new ArrayList<>(Arrays.asList("Common", "Uncommon", "Rare", "Very Rare", "Import", "Black Market")));
 
             valueLists.add(new ArrayList<>(Arrays.asList("Cosmetic", "Tool", "Taunt")));
             valueLists.add(new ArrayList<>(Arrays.asList("Pyro", "Heavy", "Scout", "Sniper", "Engineer", "Medic")));
@@ -101,11 +103,11 @@ public class DbDefaultConfig {
                 for (String value : values) {
                     CategoryValue categoryValue = new CategoryValue(value, category);
                     categoryValueRepository.save(categoryValue);
+
                 }
+
             }
-
-
-
+        **/
         };
     }
 }
