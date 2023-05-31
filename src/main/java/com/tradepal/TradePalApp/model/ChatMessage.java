@@ -15,7 +15,7 @@ public class ChatMessage {
     private User sender;
 
     @ManyToOne
-    private User recipient;
+    private User receiver;
 
     private String content;
 
@@ -23,9 +23,9 @@ public class ChatMessage {
 
     private Date timeStamp;
 
-    public ChatMessage(User sender, User recipient, String content, Date timeStamp) {
+    public ChatMessage(User sender, User receiver, String content, Date timeStamp) {
         this.sender = sender;
-        this.recipient = recipient;
+        this.receiver = receiver;
         this.content = content;
         this.timeStamp = timeStamp;
     }
@@ -41,8 +41,8 @@ public class ChatMessage {
         return sender;
     }
 
-    public User getRecipient() {
-        return recipient;
+    public User getReceiver() {
+        return receiver;
     }
 
     public String getContent() {
