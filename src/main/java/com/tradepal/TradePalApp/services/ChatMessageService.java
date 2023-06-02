@@ -6,9 +6,11 @@ import com.tradepal.TradePalApp.model.MessageStatus;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.ChatMessageRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.responses.ChatMessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ public class ChatMessageService {
         return chatMessageRepository.countBySenderAndReceiverAndStatus(sender, recipient, MessageStatus.RECEIVED);
     }
 
-    public List<ChatMessage> findChatMessages(Long senderId, Long recipientId){
+    public List<ChatMessageResponse> findChatMessages(Long senderId, Long recipientId){
         User sender = userRepository.getReferenceById(senderId);
         User recipient = userRepository.getReferenceById(recipientId);
 
@@ -54,7 +56,12 @@ public class ChatMessageService {
             updateStatuses(sender, recipient, MessageStatus.DELIVERED);
         }
 
-        return messages;
+        List<ChatMessageResponse> messageResponses = new ArrayList<>();
+        for(ChatMessage message : messages){
+            messageResponses.add(new ChatMessageResponse(message));
+        }
+
+        return messageResponses;
     }
 
 
