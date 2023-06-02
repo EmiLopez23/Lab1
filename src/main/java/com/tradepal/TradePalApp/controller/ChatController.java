@@ -2,9 +2,11 @@ package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.model.ChatMessage;
 import com.tradepal.TradePalApp.model.ChatNotification;
+import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.services.ChatMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -24,7 +26,8 @@ public class ChatController {
 
 
     @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessage chatMessage){
+    public void processMessage(@Payload ChatMessage chatMessage, @Header("senderId") Long senderId, @Header("receiverId") Long receiverId){
+        chatMessageService.setUsers(senderId,receiverId,chatMessage);
         simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/messages", new ChatNotification(chatMessage.getId(), chatMessage.getSender().getId(), chatMessage.getSender().getUsername()));
     }
 

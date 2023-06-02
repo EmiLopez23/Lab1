@@ -28,6 +28,16 @@ public class ChatMessageService {
         return chatMessage;
     }
 
+    public void setUsers(Long senderId, Long receiverId,ChatMessage chatMessage){
+        User sender = userRepository.findById(senderId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid senderId"));
+        User receiver = userRepository.findById(receiverId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
+
+        chatMessage.setSender(sender);
+        chatMessage.setReceiver(receiver);
+    }
+
     public long countNewMessages(Long senderId, Long recipientId){
         User sender = userRepository.getReferenceById(senderId);
         User recipient = userRepository.getReferenceById(recipientId);

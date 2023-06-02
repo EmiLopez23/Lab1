@@ -8,6 +8,8 @@ public class TradeInviteResponse {
 
     boolean accepted;
     String requesterUsername;
+
+    Long requesterId;
     PostResponse post;
 
 
@@ -16,6 +18,7 @@ public class TradeInviteResponse {
         this.tradeId = tradeInvite.getId();
         this.accepted = tradeInvite.isAccepted();
         this.requesterUsername = tradeInvite.getRequester().getUsername();
+        this.requesterId = tradeInvite.getRequester().getId();
         this.post = new PostResponse(tradeInvite.getPost());
     }
 
@@ -33,5 +36,9 @@ public class TradeInviteResponse {
 
     public String getRequesterUsername() {
         return requesterUsername;
+    }
+
+    public Long getRequesterId() {
+        return requesterId;
     }
 }

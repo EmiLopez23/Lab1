@@ -33,6 +33,14 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
     public Long getId() {
         return id;
     }

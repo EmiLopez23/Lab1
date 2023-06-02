@@ -9,12 +9,14 @@ public class AuthResponse {
     String token;
     Role role;
 
+    Long id;
     String username;
 
-    public AuthResponse(String token, Role role, String username) {
+    public AuthResponse(String token, Role role, String username, Long id) {
         this.token = token;
         this.role = role;
         this.username = username;
+        this.id = id;
     }
 
     public String getToken() {
@@ -26,6 +28,10 @@ public class AuthResponse {
     }
 
     public String getUsername(){return username;}
+
+    public Long getId() {
+        return id;
+    }
 }
 
 
