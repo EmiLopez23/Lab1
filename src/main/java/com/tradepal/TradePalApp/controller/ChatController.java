@@ -28,6 +28,7 @@ public class ChatController {
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage, @Header("senderId") Long senderId, @Header("receiverId") Long receiverId){
         chatMessageService.setUsers(senderId,receiverId,chatMessage);
+        chatMessageService.save(chatMessage);
         simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/messages", new ChatNotification(chatMessage.getId(), chatMessage.getSender().getId(), chatMessage.getSender().getUsername()));
     }
 
