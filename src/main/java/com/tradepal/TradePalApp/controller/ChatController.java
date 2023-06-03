@@ -3,6 +3,7 @@ package com.tradepal.TradePalApp.controller;
 import com.tradepal.TradePalApp.model.ChatMessage;
 import com.tradepal.TradePalApp.model.ChatNotification;
 import com.tradepal.TradePalApp.model.User;
+import com.tradepal.TradePalApp.responses.ChatMessageResponse;
 import com.tradepal.TradePalApp.services.ChatMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class ChatController {
     public void processMessage(@Payload ChatMessage chatMessage, @Header("senderId") Long senderId, @Header("receiverId") Long receiverId){
         chatMessageService.setUsers(senderId,receiverId,chatMessage);
         chatMessageService.save(chatMessage);
-        simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/messages", new ChatNotification(chatMessage.getId(), chatMessage.getSender().getId(), chatMessage.getSender().getUsername()));
+        simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/messages", new ChatMessageResponse(chatMessage));
     }
 
     @GetMapping("/messages/{senderId}/{receiverId}/count")
