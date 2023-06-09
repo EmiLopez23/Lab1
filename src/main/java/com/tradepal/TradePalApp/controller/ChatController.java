@@ -31,6 +31,8 @@ public class ChatController {
         chatMessageService.setUsers(senderId,receiverId,chatMessage);
         chatMessageService.save(chatMessage);
         simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/messages", new ChatMessageResponse(chatMessage));
+        simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiver().getUsername(), "queue/notifications", new ChatNotification(chatMessage.getId(), chatMessage.getSender().getId(), chatMessage.getSender().getUsername()));
+
     }
 
     @GetMapping("/messages/{senderId}/{receiverId}/count")
@@ -42,6 +44,7 @@ public class ChatController {
     public ResponseEntity<?> findChatMessages(@PathVariable Long senderId, @PathVariable Long receiverId){
         return ResponseEntity.ok(chatMessageService.findChatMessages(senderId, receiverId));
     }
+
 
     @GetMapping("/messages/{id}")
     public ResponseEntity<?> findMessage(@PathVariable Long id){
