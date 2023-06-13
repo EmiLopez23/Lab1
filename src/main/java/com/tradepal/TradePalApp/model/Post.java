@@ -21,10 +21,13 @@ public class Post {
     @ManyToOne
     private Game game;
 
+    private boolean active;
+
     public Post(User user, Game game) {
         this.user = user;
         this.game = game;
         this.tradeItems = new ArrayList<>();
+        this.active = true;
     }
 
     public Post() {
@@ -56,5 +59,13 @@ public class Post {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

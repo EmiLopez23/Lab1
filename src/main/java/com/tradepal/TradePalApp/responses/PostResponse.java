@@ -10,6 +10,7 @@ public class PostResponse {
     Long id;
     String username;
     String gameName;
+    boolean active;
     List<PostItem> tradeItems;
 
     public PostResponse(Post post){
@@ -17,7 +18,7 @@ public class PostResponse {
         this.username = post.getUser().getUsername();
         this.gameName = post.getGame().getName();
         this.tradeItems = post.getTradeItems();
-
+        this.active = post.isActive();
     }
 
     public Long getId() {
@@ -46,5 +47,12 @@ public class PostResponse {
 
     public void setTradeItems(List<PostItem> tradeItems) {
         this.tradeItems = tradeItems;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

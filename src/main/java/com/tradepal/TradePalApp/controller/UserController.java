@@ -45,4 +45,9 @@ public class UserController {
         Long userId = Long.parseLong(claims.get("id").toString());
         return inventoryService.addItemtoUserInventory(userId, userItemRequest.getItemId(), userItemRequest.getQuantity());
     }
+
+    @GetMapping("/{username}")
+    ResponseEntity <?> getUserProfile(@PathVariable String username){
+        return userService.getProfile(username);
+    }
 }

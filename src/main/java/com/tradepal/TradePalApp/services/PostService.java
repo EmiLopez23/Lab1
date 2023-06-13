@@ -82,6 +82,9 @@ public class PostService {
         tradeInvite.setAccepted(true);
         tradeInviteRepository.save(tradeInvite);
         tradeItems(tradeInvite);
+        Post post = tradeInvite.getPost();
+        post.setActive(false);
+        postRepository.save(post);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
