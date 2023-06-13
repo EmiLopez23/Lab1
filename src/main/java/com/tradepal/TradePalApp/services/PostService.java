@@ -68,6 +68,17 @@ public class PostService {
         return new ResponseEntity<>(postsResponse,HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getAllActivePosts(){
+        List<Post> posts = postRepository.findAll();
+        List<PostResponse> postsResponse = new ArrayList<>();
+        for (Post post : posts) {
+            if(post.isActive()) {
+                postsResponse.add(new PostResponse(post));
+            }
+        }
+        return new ResponseEntity<>(postsResponse,HttpStatus.OK);
+    }
+
 
     public ResponseEntity<String> createTradeInvite(Long interestedId, Long postId){
         User interested = userRepository.getReferenceById(interestedId);

@@ -32,6 +32,11 @@ public class PostController {
         return postService.getAllPosts();
     }
 
+    @GetMapping("/allActive")
+    public ResponseEntity<?> findAllActivePosts(){
+        return postService.getAllActivePosts();
+    }
+
     @PostMapping("/create-post")
     public ResponseEntity<?> createPost(HttpServletRequest request, @RequestBody PostRequest postRequest){
         Claims claims = (Claims) request.getAttribute("claims");
