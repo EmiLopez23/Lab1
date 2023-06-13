@@ -5,9 +5,12 @@ import com.tradepal.TradePalApp.model.ChatRoom;
 import com.tradepal.TradePalApp.model.MessageStatus;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.ChatMessageRepository;
+import com.tradepal.TradePalApp.repository.ChatRoomRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
 import com.tradepal.TradePalApp.responses.ChatMessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +27,9 @@ public class ChatMessageService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
+
     public ChatMessage save(ChatMessage chatMessage){
         chatMessage.setStatus(MessageStatus.RECEIVED);
         chatMessageRepository.save(chatMessage);
@@ -36,6 +42,7 @@ public class ChatMessageService {
         User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid receiverId"));
 
+        chatRoomService.checkExistsChatRoom(sender, receiver);
         chatMessage.setSender(sender);
         chatMessage.setReceiver(receiver);
     }
@@ -75,5 +82,11 @@ public class ChatMessageService {
             message.setStatus(status);
             chatMessageRepository.save(message);
         }
+    }
+
+    public ResponseEntity<?> getContacts(Long userId){
+        User user = userRepository.getReferenceById(userId);
+        List<User> contacts = chatRoomRepository.findContacts(user);
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 }

@@ -5,6 +5,9 @@ import com.tradepal.TradePalApp.model.ChatNotification;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.responses.ChatMessageResponse;
 import com.tradepal.TradePalApp.services.ChatMessageService;
+import com.tradepal.TradePalApp.services.ChatRoomService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
@@ -51,4 +54,10 @@ public class ChatController {
         return ResponseEntity.ok(chatMessageService.findById(id));
     }
 
+    @GetMapping("/contacts")
+    public ResponseEntity<?> getContacts(HttpServletRequest request){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return chatMessageService.getContacts(userId);
+    }
 }
