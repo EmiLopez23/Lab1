@@ -3,6 +3,7 @@ package com.tradepal.TradePalApp.controller;
 import com.tradepal.TradePalApp.model.Report;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.requests.CommentRequest;
 import com.tradepal.TradePalApp.requests.ReportRequest;
 import com.tradepal.TradePalApp.requests.UserItemRequest;
 import com.tradepal.TradePalApp.services.InventoryService;
@@ -59,4 +60,19 @@ public class UserController {
         Long userId = Long.parseLong(claims.get("id").toString());
         return userService.createReport(userId, report.getSubjectUsername(), report.getContent());
     }
+
+    @PostMapping("/rate")
+    ResponseEntity<?> rateUser(HttpServletRequest request, @RequestParam("user") String username, @RequestParam("rating") int rating){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return userService.createRating(userId, username, rating);
+    }
+
+    @PostMapping("/comment")
+    ResponseEntity<?> commentUser(HttpServletRequest request, @RequestBody CommentRequest comment){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return userService.createComment(userId, comment.getSubjectUsername(), comment.getContent());
+    }
+
 }
