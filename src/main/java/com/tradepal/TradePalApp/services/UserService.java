@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.services;
 import com.tradepal.TradePalApp.Generator.JWTGeneratorTokenImpl;
+import com.tradepal.TradePalApp.exception.UserBannedException;
 import com.tradepal.TradePalApp.exception.UserNotFoundException;
 import com.tradepal.TradePalApp.exception.UserRegisterException;
 import com.tradepal.TradePalApp.model.*;
@@ -40,7 +41,10 @@ public class UserService {
     public ResponseEntity<?> userLogin(String username, String password){
         User existingUser = userRepository.findUserByUsernameAndPassword(username,password);
         if(existingUser!=null){
-            return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(existingUser), existingUser.getRole(), existingUser.getUsername(), existingUser.getId()), HttpStatus.OK);
+            if(!existingUser.isBanned()) {
+                return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(existingUser), existingUser.getRole(), existingUser.getUsername(), existingUser.getId()), HttpStatus.OK);
+            }
+            else throw new UserBannedException("User Has Been Banned");
         }
         else throw new UserNotFoundException("User Not Found");
 
