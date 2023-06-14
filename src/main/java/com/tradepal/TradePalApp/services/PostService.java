@@ -103,8 +103,7 @@ public class PostService {
 
     public ResponseEntity<?> rejectTrade(Long tradeInviteId){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
-        tradeInvite.setAccepted(true);
-        tradeInviteRepository.save(tradeInvite);
+        tradeInviteRepository.delete(tradeInvite);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
