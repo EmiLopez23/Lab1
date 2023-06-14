@@ -4,10 +4,7 @@ import com.tradepal.TradePalApp.services.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -18,5 +15,10 @@ public class AdminController {
 
     @GetMapping("/reports")
     ResponseEntity<?> getReports(){return adminService.getReports();}
+
+    @PostMapping("report/{reportId}")
+    ResponseEntity<?> answerReport(@PathVariable Long reportId, @RequestParam("ban") boolean response){
+        return adminService.handleReport(response, reportId);
+    }
 
 }

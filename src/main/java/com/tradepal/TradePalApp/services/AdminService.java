@@ -32,6 +32,7 @@ public class AdminService {
             userRepository.save(user);
         }
         report.setResolved(true);
+        reportRepository.save(report);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
