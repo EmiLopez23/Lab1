@@ -3,7 +3,10 @@ package com.tradepal.TradePalApp.services;
 import com.tradepal.TradePalApp.model.ChatRoom;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.ChatRoomRepository;
+import com.tradepal.TradePalApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +15,9 @@ import java.util.Optional;
 public class ChatRoomService {
     @Autowired
     ChatRoomRepository chatRoomRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
 
     public void checkExistsChatRoom(User sender, User receiver){
@@ -39,5 +45,15 @@ public class ChatRoomService {
         } else{
             return optional;
         }
+    }
+
+    public ResponseEntity<?> createChatRoom(Long senderId, Long receiverId){
+        User sender = userRepository.getReferenceById(senderId);
+        User receiver = userRepository.getReferenceById(receiverId);
+        ChatRoom senderRecipient = new ChatRoom(sender, receiver);
+        ChatRoom recipientSender = new ChatRoom(receiver, sender);
+        chatRoomRepository.save(senderRecipient);
+        chatRoomRepository.save(recipientSender);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

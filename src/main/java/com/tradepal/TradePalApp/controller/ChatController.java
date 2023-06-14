@@ -15,9 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @CrossOrigin("http://localhost:3000")
@@ -27,6 +25,9 @@ public class ChatController {
     SimpMessagingTemplate simpMessagingTemplate;
     @Autowired
     ChatMessageService chatMessageService;
+
+    @Autowired
+    ChatRoomService chatRoomService;
 
 
     @MessageMapping("/chat")
@@ -59,5 +60,13 @@ public class ChatController {
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
         return chatMessageService.getContacts(userId);
+    }
+
+    @PostMapping("/create-chat")
+    public ResponseEntity<?> createChat(HttpServletRequest request, @RequestParam("id") Long receiverId){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return chatRoomService.createChatRoom(userId, receiverId);
+
     }
 }
