@@ -18,6 +18,11 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 
     List<ChatMessage> findBySenderAndReceiver(User sender, User receiver);
 
-    @Query("SELECT DISTINCT CASE WHEN cm.sender = :user THEN cm.receiver ELSE cm.sender END AS user_id FROM ChatMessage AS cm WHERE cm.sender = :user OR cm.receiver = :user")
-    List<User> findContacts(@Param("user") User user);
+
+
+    @Query("SELECT cm.receiver FROM ChatMessage cm WHERE cm.sender = :sender")
+    List<User> findReceiverBySender(@Param("sender") User sender);
+
+    @Query("SELECT cm.sender FROM ChatMessage cm WHERE cm.receiver = :receiver")
+    List<User> findSenderByReceiver(@Param("receiver") User receiver);
 }

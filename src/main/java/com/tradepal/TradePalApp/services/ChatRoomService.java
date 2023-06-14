@@ -13,7 +13,18 @@ public class ChatRoomService {
     @Autowired
     ChatRoomRepository chatRoomRepository;
 
-    private Optional<ChatRoom> getChatRoom(User sender, User recipient, boolean createIfNotExists) {
+
+    public void checkExistsChatRoom(User sender, User receiver){
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndRecipient(sender, receiver);
+        if(optionalChatRoom.isEmpty()){
+            ChatRoom senderRecipient = new ChatRoom(sender, receiver);
+            ChatRoom recipientSender = new ChatRoom(receiver, sender);
+            chatRoomRepository.save(senderRecipient);
+            chatRoomRepository.save(recipientSender);
+        }
+    }
+
+    public Optional<ChatRoom> getChatRoom(User sender, User recipient, boolean createIfNotExists) {
         Optional<ChatRoom> optional = chatRoomRepository.findBySenderAndRecipient(sender, recipient);
         if (optional.isEmpty()) {
             if (!createIfNotExists) {

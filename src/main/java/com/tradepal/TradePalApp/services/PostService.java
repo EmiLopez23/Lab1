@@ -130,7 +130,7 @@ public class PostService {
     }
 
     public ResponseEntity<?> getTradeInvites(Long userId){
-        List<TradeInvite> tradeInvites = tradeInviteRepository.getTradeInviteByPostCreator(userId);
+        List<TradeInvite> tradeInvites = tradeInviteRepository.getTradeInviteNotifications(userId);
         List<TradeInviteResponse> tradeInviteResponses = new ArrayList<>();
         for(TradeInvite tradeInvite : tradeInvites){
             tradeInviteResponses.add(new TradeInviteResponse(tradeInvite));
