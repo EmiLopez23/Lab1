@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    @Query("select r from Report r where r.resolved = false or r.subject.banned = true")
+    @Query("select r from Report r where r.resolved = false and r.subject.banned = false")
     List<Report> getPendingReports();
 }

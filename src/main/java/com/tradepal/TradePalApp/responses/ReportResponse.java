@@ -10,7 +10,7 @@ public class ReportResponse {
 
     public ReportResponse(Report report){
         this.reporterUsername = report.getReporter().getUsername();
-        this.subjectUsername = report.getReporter().getUsername();
+        this.subjectUsername = report.getSubject().getUsername();
         this.reportId = report.getId();
         this.content = report.getContent();
     }
