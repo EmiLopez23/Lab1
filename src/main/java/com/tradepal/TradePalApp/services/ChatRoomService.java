@@ -50,10 +50,13 @@ public class ChatRoomService {
     public ResponseEntity<?> createChatRoom(Long senderId, Long receiverId){
         User sender = userRepository.getReferenceById(senderId);
         User receiver = userRepository.getReferenceById(receiverId);
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndRecipient(sender, receiver);
+        if(optionalChatRoom.isEmpty()){
         ChatRoom senderRecipient = new ChatRoom(sender, receiver);
         ChatRoom recipientSender = new ChatRoom(receiver, sender);
         chatRoomRepository.save(senderRecipient);
         chatRoomRepository.save(recipientSender);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
