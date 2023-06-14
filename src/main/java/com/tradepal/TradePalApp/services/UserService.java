@@ -2,14 +2,8 @@ package com.tradepal.TradePalApp.services;
 import com.tradepal.TradePalApp.Generator.JWTGeneratorTokenImpl;
 import com.tradepal.TradePalApp.exception.UserNotFoundException;
 import com.tradepal.TradePalApp.exception.UserRegisterException;
-import com.tradepal.TradePalApp.model.Inventory;
-import com.tradepal.TradePalApp.model.Post;
-import com.tradepal.TradePalApp.model.TradeInvite;
-import com.tradepal.TradePalApp.model.User;
-import com.tradepal.TradePalApp.repository.InventoryRepository;
-import com.tradepal.TradePalApp.repository.PostRepository;
-import com.tradepal.TradePalApp.repository.TradeInviteRepository;
-import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.model.*;
+import com.tradepal.TradePalApp.repository.*;
 import com.tradepal.TradePalApp.responses.AuthResponse;
 import com.tradepal.TradePalApp.responses.PostResponse;
 import com.tradepal.TradePalApp.responses.ProfileResponse;
@@ -31,6 +25,9 @@ public class UserService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private ReportRepository reportRepository;
 
     @Autowired
     private TradeInviteRepository tradeInviteRepository;
@@ -73,5 +70,13 @@ public class UserService {
         }
         ProfileResponse profileResponse = new ProfileResponse(user, activePosts, confirmedTrades);
         return new ResponseEntity<>(profileResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> createReport(Long reporterId, String subjectUsername, String content){
+        User reporter = userRepository.getReferenceById(reporterId);
+        User subject = userRepository.findUserByUsername(subjectUsername);
+        Report report = new Report(reporter, subject, content);
+        reportRepository.save(report);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

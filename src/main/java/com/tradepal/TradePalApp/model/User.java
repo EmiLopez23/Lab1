@@ -11,6 +11,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private boolean banned;
 
     @OneToOne(mappedBy = "user")
     @JsonIgnore
@@ -25,6 +26,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = Role.USER;
+        this.banned = false;
     }
 
     public User(String username, String password, String email, Role role) {
@@ -32,6 +34,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
+        this.banned = false;
     }
 
     public User() {
@@ -77,5 +80,13 @@ public class User {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 }

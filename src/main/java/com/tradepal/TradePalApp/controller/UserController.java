@@ -1,7 +1,9 @@
 package com.tradepal.TradePalApp.controller;
 
+import com.tradepal.TradePalApp.model.Report;
 import com.tradepal.TradePalApp.model.User;
 import com.tradepal.TradePalApp.repository.UserRepository;
+import com.tradepal.TradePalApp.requests.ReportRequest;
 import com.tradepal.TradePalApp.requests.UserItemRequest;
 import com.tradepal.TradePalApp.services.InventoryService;
 import com.tradepal.TradePalApp.services.UserService;
@@ -49,5 +51,12 @@ public class UserController {
     @GetMapping("/{username}")
     ResponseEntity <?> getUserProfile(@PathVariable String username){
         return userService.getProfile(username);
+    }
+
+    @PostMapping("/report")
+    ResponseEntity<?> reportUser(HttpServletRequest request, @RequestBody ReportRequest report){
+        Claims claims = (Claims) request.getAttribute("claims");
+        Long userId = Long.parseLong(claims.get("id").toString());
+        return userService.createReport(userId, report.getSubjectUsername(), report.getContent());
     }
 }
