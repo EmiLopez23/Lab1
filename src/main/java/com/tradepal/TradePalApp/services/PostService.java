@@ -90,12 +90,21 @@ public class PostService {
 
     public ResponseEntity<String> confirmTrade(Long tradeInviteId){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
+        if(!tradeInvite.isAccepted()) {
+            tradeInvite.setAccepted(true);
+            tradeInviteRepository.save(tradeInvite);
+            tradeItems(tradeInvite);
+            Post post = tradeInvite.getPost();
+            post.setActive(false);
+            postRepository.save(post);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> rejectTrade(Long tradeInviteId){
+        TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
         tradeInvite.setAccepted(true);
         tradeInviteRepository.save(tradeInvite);
-        tradeItems(tradeInvite);
-        Post post = tradeInvite.getPost();
-        post.setActive(false);
-        postRepository.save(post);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

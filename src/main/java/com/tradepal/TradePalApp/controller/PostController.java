@@ -56,6 +56,11 @@ public class PostController {
         return postService.confirmTrade(inviteId);
     }
 
+    @PostMapping("/reject-invite/{inviteId}")
+    public ResponseEntity<?> rejectInvite(@PathVariable Long inviteId){
+        return postService.rejectTrade(inviteId);
+    }
+
 
     @GetMapping("/all-invites")
     public ResponseEntity<?> getInvitesByCreatorId(HttpServletRequest request){
