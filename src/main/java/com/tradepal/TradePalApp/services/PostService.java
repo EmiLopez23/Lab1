@@ -88,6 +88,11 @@ public class PostService {
         return new ResponseEntity<>(postsResponse,HttpStatus.OK);
     }
 
+    public ResponseEntity<PostResponse> getPost(Long postId){
+        Post post = postRepository.getReferenceById(postId);
+        return new ResponseEntity<>(new PostResponse(post),HttpStatus.OK);
+    }
+
 
     public ResponseEntity<String> createTradeInvite(Long interestedId, Long postId){
         User interested = userRepository.getReferenceById(interestedId);
@@ -100,7 +105,7 @@ public class PostService {
     public ResponseEntity<String> confirmTrade(Long tradeInviteId){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
         if(!tradeInvite.isAccepted()) {
-            if(!tradeInvite.getPost().isActive()) {
+            if(tradeInvite.getPost().isActive()) {
                 tradeInvite.setAccepted(true);
                 tradeInviteRepository.save(tradeInvite);
                 tradeItems(tradeInvite);
@@ -149,6 +154,11 @@ public class PostService {
                 userItemRepository.save(itemOut);
             }
         }else throw new NotEnoughItemsException("Not Enough Items For Trade");
+    }
+
+    public ResponseEntity<TradeInviteResponse> getTradeInvite(Long tradeId){
+        TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeId);
+        return new ResponseEntity<>(new TradeInviteResponse(tradeInvite),HttpStatus.OK);
     }
 
     public ResponseEntity<?> getTradeInvites(Long userId){
