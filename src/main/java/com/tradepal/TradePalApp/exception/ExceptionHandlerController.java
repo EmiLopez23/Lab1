@@ -19,4 +19,24 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(userExc.getMessage());
     }
 
+    @ExceptionHandler(TradeInviteAlreadyAccepted.class)
+    public ResponseEntity<String> handleTradeInviteAlreadyAcceptedException(TradeInviteAlreadyAccepted ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(PostNotActive.class)
+    public ResponseEntity<String> handlePostNotActiveException(PostNotActive ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NotEnoughItemsException.class)
+    public ResponseEntity<String> handleNotEnoughItemsException(NotEnoughItemsException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserBannedException.class)
+    public ResponseEntity<String> handleUserBannedException(UserBannedException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
 }

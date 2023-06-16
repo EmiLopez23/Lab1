@@ -46,9 +46,7 @@ public class JwtFilter extends GenericFilterBean {
                 chain.doFilter(request, response);
             } catch (SignatureException e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");}
-            catch (ServletException e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access");
-            }
+
         }
     }
 }
