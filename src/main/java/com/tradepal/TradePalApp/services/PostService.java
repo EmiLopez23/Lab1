@@ -1,5 +1,8 @@
 package com.tradepal.TradePalApp.services;
 
+import com.tradepal.TradePalApp.exception.NotEnoughItemsException;
+import com.tradepal.TradePalApp.exception.PostNotActive;
+import com.tradepal.TradePalApp.exception.TradeInviteAlreadyAccepted;
 import com.tradepal.TradePalApp.model.*;
 import com.tradepal.TradePalApp.repository.*;
 import com.tradepal.TradePalApp.requests.PostRequest;
@@ -47,8 +50,14 @@ public class PostService {
         postRepository.save(post);
         for (PostRequest.ItemQuantity itemOffer : offeredItemsId){
             Item item = itemRepository.getReferenceById(itemOffer.getId());
-            PostItem postItem = new PostItem(post, item, TradeDirection.OFFERED, itemOffer.getQty());
-            postItemRepository.save(postItem);
+            Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(item, user.getInventory());
+            if(userItem.isPresent() && userItem.get().getQuantity() >= itemOffer.getQty()) {
+                PostItem postItem = new PostItem(post, item, TradeDirection.OFFERED, itemOffer.getQty());
+                postItemRepository.save(postItem);
+            }else {
+                postRepository.delete(post);
+                throw new NotEnoughItemsException("Not Enough Items For Trade");
+            }
         }
         for(PostRequest.ItemQuantity itemWant : wantedItemsId){
             Item item = itemRepository.getReferenceById(itemWant.getId());
@@ -91,14 +100,19 @@ public class PostService {
     public ResponseEntity<String> confirmTrade(Long tradeInviteId){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
         if(!tradeInvite.isAccepted()) {
-            tradeInvite.setAccepted(true);
-            tradeInviteRepository.save(tradeInvite);
-            tradeItems(tradeInvite);
-            Post post = tradeInvite.getPost();
-            post.setActive(false);
-            postRepository.save(post);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+            if(!tradeInvite.getPost().isActive()) {
+                tradeInvite.setAccepted(true);
+                tradeInviteRepository.save(tradeInvite);
+                tradeItems(tradeInvite);
+                Post post = tradeInvite.getPost();
+                post.setActive(false);
+                postRepository.save(post);
+                checkPostRequirements(tradeInvite.getRequester());
+                checkPostRequirements(tradeInvite.getPost().getUser());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }else throw new PostNotActive("Post Is Not Active");
+        }else throw new TradeInviteAlreadyAccepted("Trade Already Accepted");
+
     }
 
     public ResponseEntity<?> rejectTrade(Long tradeInviteId){
@@ -125,7 +139,7 @@ public class PostService {
     public void transferItem(PostItem postItem, User userIn, User userOut){
         inventoryService.itemAddQuantity(userIn.getInventory(), postItem.getItem(), postItem.getQuantity());
         Optional<UserItem> optionalUserItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), userOut.getInventory());
-        if(optionalUserItem.isPresent()) {
+        if(optionalUserItem.isPresent() && optionalUserItem.get().getQuantity() >= postItem.getQuantity()) {
             UserItem itemOut = optionalUserItem.get();
             int quantityDiff = itemOut.getQuantity() - postItem.getQuantity();
             if (quantityDiff <= 0) {
@@ -134,7 +148,7 @@ public class PostService {
                 itemOut.setQuantity(quantityDiff);
                 userItemRepository.save(itemOut);
             }
-        }
+        }else throw new NotEnoughItemsException("Not Enough Items For Trade");
     }
 
     public ResponseEntity<?> getTradeInvites(Long userId){
@@ -144,5 +158,21 @@ public class PostService {
             tradeInviteResponses.add(new TradeInviteResponse(tradeInvite));
         }
         return new ResponseEntity<>(tradeInviteResponses, HttpStatus.OK);
+    }
+
+
+    public void checkPostRequirements(User user){
+        List<Post> posts = postRepository.getPostsByUserAndActive(user, true);
+        for(Post post : posts){
+            List<PostItem> postItems = post.getTradeItems();
+            for (PostItem postItem : postItems){
+                Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), user.getInventory());
+                if (userItem.isEmpty() || userItem.get().getQuantity() < postItem.getQuantity()){
+                    post.setActive(false);
+                    postRepository.save(post);
+                    break;
+                }
+            }
+        }
     }
 }

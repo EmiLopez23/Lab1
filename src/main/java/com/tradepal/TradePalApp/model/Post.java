@@ -15,7 +15,7 @@ public class Post {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostItem> tradeItems;
 
     @ManyToOne
