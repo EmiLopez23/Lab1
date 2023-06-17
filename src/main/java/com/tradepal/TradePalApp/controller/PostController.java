@@ -5,6 +5,7 @@ import com.tradepal.TradePalApp.repository.UserRepository;
 import com.tradepal.TradePalApp.requests.PostRequest;
 import com.tradepal.TradePalApp.responses.TradeInviteResponse;
 import com.tradepal.TradePalApp.services.PostService;
+import com.tradepal.TradePalApp.services.TradeService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
-    
+    @Autowired
+    TradeService tradeService;
 
 
     @GetMapping("/all")
@@ -46,17 +48,17 @@ public class PostController {
     public ResponseEntity<String> createInvite(HttpServletRequest request, @PathVariable Long postId){
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
-        return postService.createTradeInvite(userId, postId);
+        return tradeService.createTradeInvite(userId, postId);
     }
 
     @PostMapping("/accept-invite/{inviteId}")
     public ResponseEntity<String> acceptInvite(@PathVariable Long inviteId){
-        return postService.confirmTrade(inviteId);
+        return tradeService.confirmTrade(inviteId);
     }
 
     @PostMapping("/reject-invite/{inviteId}")
     public ResponseEntity<?> rejectInvite(@PathVariable Long inviteId){
-        return postService.rejectTrade(inviteId);
+        return tradeService.rejectTrade(inviteId);
     }
 
 
@@ -64,12 +66,12 @@ public class PostController {
     public ResponseEntity<?> getInvitesByCreatorId(HttpServletRequest request){
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
-        return postService.getTradeInvites(userId);
+        return tradeService.getTradeInvites(userId);
     }
 
     @GetMapping("/getInvite/{inviteId}")
     public ResponseEntity<TradeInviteResponse> getPost(@PathVariable Long inviteId){
-        return postService.getTradeInvite(inviteId);
+        return tradeService.getTradeInvite(inviteId);
     }
 
 }
