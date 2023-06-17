@@ -3,6 +3,7 @@ package com.tradepal.TradePalApp.controller;
 import com.tradepal.TradePalApp.repository.PostRepository;
 import com.tradepal.TradePalApp.repository.UserRepository;
 import com.tradepal.TradePalApp.requests.PostRequest;
+import com.tradepal.TradePalApp.requests.ReviewRequest;
 import com.tradepal.TradePalApp.responses.TradeInviteResponse;
 import com.tradepal.TradePalApp.services.PostService;
 import com.tradepal.TradePalApp.services.TradeService;
@@ -52,8 +53,8 @@ public class PostController {
     }
 
     @PostMapping("/accept-invite/{inviteId}")
-    public ResponseEntity<String> acceptInvite(@PathVariable Long inviteId){
-        return tradeService.confirmTrade(inviteId);
+    public ResponseEntity<String> acceptInvite(@PathVariable Long inviteId, @RequestBody ReviewRequest review){
+        return tradeService.confirmTrade(inviteId, review);
     }
 
     @PostMapping("/reject-invite/{inviteId}")

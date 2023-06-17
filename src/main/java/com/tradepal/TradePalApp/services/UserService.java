@@ -107,13 +107,10 @@ public class UserService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<?> createReview(Long reviewerId, String subjectUsername, int rating, String content){
-        User reviewer = userRepository.getReferenceById(reviewerId);
-        User subject = userRepository.findUserByUsername(subjectUsername);
+    public void createReview(User reviewer, User subject, int rating, String content){
         UserRating userRating = new UserRating(reviewer, subject, rating);
         UserComment comment = new UserComment(reviewer, subject, content);
         userRatingRepository.save(userRating);
         userCommentRepository.save(comment);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

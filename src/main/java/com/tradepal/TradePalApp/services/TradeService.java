@@ -6,6 +6,7 @@ import com.tradepal.TradePalApp.exception.PostNotActive;
 import com.tradepal.TradePalApp.exception.TradeInviteAlreadyAccepted;
 import com.tradepal.TradePalApp.model.*;
 import com.tradepal.TradePalApp.repository.*;
+import com.tradepal.TradePalApp.requests.ReviewRequest;
 import com.tradepal.TradePalApp.responses.TradeInviteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,8 @@ public class TradeService {
     InventoryService inventoryService;
     @Autowired
     PostService postService;
-
+    @Autowired
+    UserService userService;
 
 
 
@@ -46,7 +48,7 @@ public class TradeService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> confirmTrade(Long tradeInviteId){
+    public ResponseEntity<String> confirmTrade(Long tradeInviteId, ReviewRequest review){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
         if(!tradeInvite.isAccepted()) {
             if(tradeInvite.getPost().isActive()) {
@@ -59,6 +61,7 @@ public class TradeService {
                 userItemRepository.deleteAll(toDelete);
                 inventoryRepository.save(tradeInvite.getRequester().getInventory());
                 inventoryRepository.save(tradeInvite.getPost().getUser().getInventory());
+                userService.createReview(post.getUser(), tradeInvite.getRequester(), review.getRating(), review.getContent());
                 postService.checkPostRequirements(tradeInvite.getRequester());
                 postService.checkPostRequirements(tradeInvite.getPost().getUser());
                 return new ResponseEntity<>(HttpStatus.OK);
