@@ -10,7 +10,7 @@ public class PostItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postItemgen")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnore
     private Post post;
 

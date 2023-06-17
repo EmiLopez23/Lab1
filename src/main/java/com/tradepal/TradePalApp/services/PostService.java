@@ -43,6 +43,9 @@ public class PostService {
     @Autowired
     InventoryService inventoryService;
 
+    @Autowired
+    InventoryRepository inventoryRepository;
+
     public ResponseEntity<String> createPost(Long userId, String gameName, List<PostRequest.ItemQuantity> offeredItemsId, List<PostRequest.ItemQuantity> wantedItemsId){
         User user = userRepository.getReferenceById(userId);
         Game game = gameRepository.findGameByName(gameName);
@@ -107,11 +110,14 @@ public class PostService {
         if(!tradeInvite.isAccepted()) {
             if(tradeInvite.getPost().isActive()) {
                 tradeInvite.setAccepted(true);
-                tradeInviteRepository.save(tradeInvite);
-                tradeItems(tradeInvite);
+                List<UserItem> toDelete = tradeItems(tradeInvite);
                 Post post = tradeInvite.getPost();
                 post.setActive(false);
                 postRepository.save(post);
+                tradeInviteRepository.save(tradeInvite);
+                userItemRepository.deleteAll(toDelete);
+                inventoryRepository.save(tradeInvite.getRequester().getInventory());
+                inventoryRepository.save(tradeInvite.getPost().getUser().getInventory());
                 checkPostRequirements(tradeInvite.getRequester());
                 checkPostRequirements(tradeInvite.getPost().getUser());
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -126,32 +132,38 @@ public class PostService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public void tradeItems(TradeInvite tradeInvite){
+    public List<UserItem> tradeItems(TradeInvite tradeInvite){
         Post post = tradeInvite.getPost();
         User postCreator = tradeInvite.getPost().getUser();
         User trader = tradeInvite.getRequester();
         List<PostItem> itemsTraded = post.getTradeItems();
+        List<UserItem> toDelete = new ArrayList<>();
         for(PostItem postItem : itemsTraded){
+            UserItem item;
             if(postItem.getTradeDirection() == TradeDirection.OFFERED){
-                transferItem(postItem, trader, postCreator);
+                item = transferItem(postItem, trader, postCreator);
             }
             else{
-                transferItem(postItem, postCreator, trader);
+                item = transferItem(postItem, postCreator, trader);
+            }
+            if(item != null) {
+                toDelete.add(item);
             }
         }
+        return toDelete;
     }
 
-    public void transferItem(PostItem postItem, User userIn, User userOut){
+    public UserItem transferItem(PostItem postItem, User userIn, User userOut){
         inventoryService.itemAddQuantity(userIn.getInventory(), postItem.getItem(), postItem.getQuantity());
         Optional<UserItem> optionalUserItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), userOut.getInventory());
         if(optionalUserItem.isPresent() && optionalUserItem.get().getQuantity() >= postItem.getQuantity()) {
             UserItem itemOut = optionalUserItem.get();
             int quantityDiff = itemOut.getQuantity() - postItem.getQuantity();
             if (quantityDiff <= 0) {
-                userItemRepository.delete(itemOut);
+                return itemOut;
             } else {
                 itemOut.setQuantity(quantityDiff);
-                userItemRepository.save(itemOut);
+                return null;
             }
         }else throw new NotEnoughItemsException("Not Enough Items For Trade");
     }

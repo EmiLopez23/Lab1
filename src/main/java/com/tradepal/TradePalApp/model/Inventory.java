@@ -12,7 +12,7 @@ public class Inventory {
     @GeneratedValue(generator = "inventoryGen", strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany(mappedBy = "inventory")
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
     private List<UserItem> itemList;
 
     @OneToOne
