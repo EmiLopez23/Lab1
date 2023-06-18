@@ -4,13 +4,17 @@ import com.tradepal.TradePalApp.model.Report;
 
 public class ReportResponse {
     String subjectUsername;
+    Long subjectId;
     String reporterUsername;
+    Long reporterId;
     Long reportId;
     String content;
 
     public ReportResponse(Report report){
         this.reporterUsername = report.getReporter().getUsername();
+        this.reporterId = report.getReporter().getId();
         this.subjectUsername = report.getSubject().getUsername();
+        this.subjectId = report.getSubject().getId();
         this.reportId = report.getId();
         this.content = report.getContent();
     }
@@ -45,5 +49,21 @@ public class ReportResponse {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public Long getReporterId() {
+        return reporterId;
+    }
+
+    public void setReporterId(Long reporterId) {
+        this.reporterId = reporterId;
     }
 }
