@@ -64,7 +64,7 @@ public class UserService {
         User user = userRepository.findUserByUsername(username);
         int rating = userRatingRepository.getUserRatingAverage(user);
         List<Post> posts = postRepository.getPostsByUserAndActive(user, true);
-        List<TradeInvite> tradeInvites = tradeInviteRepository.getUserConfirmedTradeInvites(user.getId(), true);
+        List<TradeInvite> tradeInvites = tradeInviteRepository.getUserConfirmedTradeInvites(user.getId());
         List<UserComment> userComments = userCommentRepository.findUserCommentsBySubject(user);
         List<PostResponse> activePosts = new ArrayList<>();
         List<TradeInviteResponse> confirmedTrades = new ArrayList<>();

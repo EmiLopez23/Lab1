@@ -1,12 +1,13 @@
 package com.tradepal.TradePalApp.responses;
 
 import com.tradepal.TradePalApp.model.TradeInvite;
+import com.tradepal.TradePalApp.model.TradeStatus;
 
 public class TradeInviteResponse {
 
     Long tradeId;
 
-    boolean accepted;
+    TradeStatus accepted;
     String requesterUsername;
 
     Long requesterId;
@@ -16,7 +17,7 @@ public class TradeInviteResponse {
 
     public TradeInviteResponse(TradeInvite tradeInvite) {
         this.tradeId = tradeInvite.getId();
-        this.accepted = tradeInvite.isAccepted();
+        this.accepted = tradeInvite.getStatus();
         this.requesterUsername = tradeInvite.getRequester().getUsername();
         this.requesterId = tradeInvite.getRequester().getId();
         this.post = new PostResponse(tradeInvite.getPost());
@@ -26,7 +27,7 @@ public class TradeInviteResponse {
         return tradeId;
     }
 
-    public boolean isAccepted() {
+    public TradeStatus getAccepted() {
         return accepted;
     }
 

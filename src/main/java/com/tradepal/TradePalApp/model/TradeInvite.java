@@ -19,12 +19,12 @@ public class TradeInvite {
 
 
 
-    boolean accepted;
+    TradeStatus status;
 
     public TradeInvite(Post post, User requester) {
         this.post = post;
         this.requester = requester;
-        this.accepted = false;
+        this.status = TradeStatus.SENT;
     }
 
     public TradeInvite() {
@@ -43,11 +43,11 @@ public class TradeInvite {
     }
 
 
-    public boolean isAccepted() {
-        return accepted;
+    public TradeStatus getStatus() {
+        return status;
     }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setStatus(TradeStatus status) {
+        this.status = status;
     }
 }

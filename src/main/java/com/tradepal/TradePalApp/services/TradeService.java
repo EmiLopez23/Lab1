@@ -50,13 +50,13 @@ public class TradeService {
 
     public ResponseEntity<String> confirmTrade(Long tradeInviteId, ReviewRequest review){
         TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(tradeInviteId);
-        if(!tradeInvite.isAccepted()) {
+        if(tradeInvite.getStatus() == TradeStatus.SENT) {
             if(tradeInvite.getPost().isActive()) {
                 List<UserItem> toDelete = tradeItems(tradeInvite);
                 Post post = tradeInvite.getPost();
                 post.setActive(false);
                 postRepository.save(post);
-                tradeInvite.setAccepted(true);
+                tradeInvite.setStatus(TradeStatus.ACCEPTED);
                 tradeInviteRepository.save(tradeInvite);
                 userItemRepository.deleteAll(toDelete);
                 inventoryRepository.save(tradeInvite.getRequester().getInventory());
@@ -124,5 +124,15 @@ public class TradeService {
             tradeInviteResponses.add(new TradeInviteResponse(tradeInvite));
         }
         return new ResponseEntity<>(tradeInviteResponses, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> completeInvite(Long inviteId, ReviewRequest review){
+        TradeInvite tradeInvite = tradeInviteRepository.getReferenceById(inviteId);
+        if(tradeInvite.getStatus() != TradeStatus.COMPLETED){
+        tradeInvite.setStatus(TradeStatus.COMPLETED);
+        tradeInviteRepository.save(tradeInvite);
+        userService.createReview(tradeInvite.getRequester(), tradeInvite.getPost().getUser(), review.getRating(), review.getContent());
+        return new ResponseEntity<>(HttpStatus.OK);
+        }else throw new TradeInviteAlreadyAccepted("TradeInvite already Completed");
     }
 }
