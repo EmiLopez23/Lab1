@@ -16,9 +16,7 @@ public class TradeInvite {
     @ManyToOne
     private User requester;
 
-
-
-
+    @Enumerated(EnumType.STRING)
     TradeStatus status;
 
     public TradeInvite(Post post, User requester) {
