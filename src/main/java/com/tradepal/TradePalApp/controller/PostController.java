@@ -76,7 +76,7 @@ public class PostController {
     }
 
     @PostMapping("/complete-invite/{inviteId}")
-    public ResponseEntity<?> completeInvite(@PathVariable Long inviteId, ReviewRequest review){
+    public ResponseEntity<?> completeInvite(@PathVariable Long inviteId,@RequestBody ReviewRequest review){
         return tradeService.completeInvite(inviteId, review);
     }
 
