@@ -37,6 +37,8 @@ public class UserService {
     private UserRatingRepository userRatingRepository;
     @Autowired
     private UserCommentRepository userCommentRepository;
+    @Autowired
+    private MailService mailService;
 
     public ResponseEntity<?> userLogin(String username, String password){
         User existingUser = userRepository.findUserByUsernameAndPassword(username,password);
@@ -57,6 +59,7 @@ public class UserService {
         userRepository.save(newUser);
         Inventory newInventory = new Inventory(newUser);
         inventoryRepository.save(newInventory);
+        mailService.sendRegisterMail(email, username);
         return new ResponseEntity<>(new AuthResponse(jwtGenerator.generateToken(newUser),newUser.getRole(), newUser.getUsername(), newUser.getId()), HttpStatus.OK);
     }
 

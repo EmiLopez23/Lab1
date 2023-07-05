@@ -36,6 +36,8 @@ public class TradeService {
     PostService postService;
     @Autowired
     UserService userService;
+    @Autowired
+    MailService mailService;
 
 
 
@@ -45,6 +47,7 @@ public class TradeService {
         Post post = postRepository.getReferenceById(postId);
         TradeInvite tradeInvite = new TradeInvite(post, interested);
         tradeInviteRepository.save(tradeInvite);
+        mailService.sendInviteSentMail(post.getUser().getEmail(), post.getUser().getUsername(), interested.getUsername());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -64,6 +67,7 @@ public class TradeService {
                 userService.createReview(post.getUser(), tradeInvite.getRequester(), review.getRating(), review.getContent());
                 postService.checkPostRequirements(tradeInvite.getRequester());
                 postService.checkPostRequirements(tradeInvite.getPost().getUser());
+                mailService.sendInviteAcceptedMail(tradeInvite.getRequester().getEmail(), tradeInvite.getRequester().getUsername(), post.getUser().getUsername());
                 return new ResponseEntity<>(HttpStatus.OK);
             }else throw new PostNotActive("Post Is Not Active");
         }else throw new TradeInviteAlreadyAccepted("Trade Already Accepted");
