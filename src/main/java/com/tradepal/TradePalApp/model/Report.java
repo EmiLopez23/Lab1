@@ -1,6 +1,11 @@
 package com.tradepal.TradePalApp.model;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Report {
 
@@ -15,11 +20,20 @@ public class Report {
     private String content;
     private boolean resolved;
 
+    @ElementCollection
+    private List<String> filePath;
+    @Transient
+    private List<MultipartFile> evidence;
+
+
+
     public Report(User reporter, User subject, String content) {
         this.reporter = reporter;
         this.subject = subject;
         this.content = content;
         this.resolved = false;
+        this.evidence = new ArrayList<>();
+        this.filePath = new ArrayList<>();
     }
 
     public Report() {
@@ -64,5 +78,21 @@ public class Report {
 
     public Long getId() {
         return id;
+    }
+
+    public List<MultipartFile> getEvidence() {
+        return evidence;
+    }
+
+    public void setEvidence(List<MultipartFile> evidence) {
+        this.evidence = evidence;
+    }
+
+    public List<String> getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(List<String> filePath) {
+        this.filePath = filePath;
     }
 }

@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,10 +89,24 @@ public class UserService {
         return new ResponseEntity<>(profileResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> createReport(Long reporterId, String subjectUsername, String content){
+    public ResponseEntity<?> createReport(Long reporterId, String subjectUsername, String content, List<MultipartFile> files){
         User reporter = userRepository.getReferenceById(reporterId);
         User subject = userRepository.findUserByUsername(subjectUsername);
         Report report = new Report(reporter, subject, content);
+        try {
+            List<String> paths = new ArrayList<>();
+            for(MultipartFile file : files){
+                byte[] bytesFile = file.getBytes();
+                String fileName = file.getOriginalFilename();
+                Path filePath = Path.of("../resources", fileName);
+                Files.write(filePath, bytesFile);
+                paths.add(fileName);
+            }
+            report.setFilePath(paths);
+        } catch (IOException e){
+            throw new RuntimeException("Error while loading file", e);
+        }
+
         reportRepository.save(report);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

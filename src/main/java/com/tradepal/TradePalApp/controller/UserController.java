@@ -53,11 +53,11 @@ public class UserController {
         return userService.getProfile(username);
     }
 
-    @PostMapping("/report")
-    ResponseEntity<?> reportUser(HttpServletRequest request, @RequestBody ReportRequest report){
+    @PostMapping(value = "/report", consumes = { "multipart/form-data" })
+    ResponseEntity<?> reportUser(HttpServletRequest request, @ModelAttribute ReportRequest report){
         Claims claims = (Claims) request.getAttribute("claims");
         Long userId = Long.parseLong(claims.get("id").toString());
-        return userService.createReport(userId, report.getSubjectUsername(), report.getContent());
+        return userService.createReport(userId, report.getSubjectUsername(), report.getContent(), report.getFiles());
     }
 
     @PostMapping("/rate")

@@ -2,6 +2,8 @@ package com.tradepal.TradePalApp.responses;
 
 import com.tradepal.TradePalApp.model.Report;
 
+import java.util.List;
+
 public class ReportResponse {
     String subjectUsername;
     Long subjectId;
@@ -10,6 +12,8 @@ public class ReportResponse {
     Long reportId;
     String content;
 
+    List<String> filePaths;
+
     public ReportResponse(Report report){
         this.reporterUsername = report.getReporter().getUsername();
         this.reporterId = report.getReporter().getId();
@@ -17,6 +21,7 @@ public class ReportResponse {
         this.subjectId = report.getSubject().getId();
         this.reportId = report.getId();
         this.content = report.getContent();
+        this.filePaths = report.getFilePath();
     }
 
     public String getSubjectUsername() {
@@ -65,5 +70,13 @@ public class ReportResponse {
 
     public void setReporterId(Long reporterId) {
         this.reporterId = reporterId;
+    }
+
+    public List<String> getFilePaths() {
+        return filePaths;
+    }
+
+    public void setFilePaths(List<String> filePaths) {
+        this.filePaths = filePaths;
     }
 }
