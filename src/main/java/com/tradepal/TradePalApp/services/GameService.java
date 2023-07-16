@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.services;
 
+import com.tradepal.TradePalApp.exception.GameAlreadyCreatedException;
 import com.tradepal.TradePalApp.model.Category;
 import com.tradepal.TradePalApp.model.CategoryValue;
 import com.tradepal.TradePalApp.model.Game;
@@ -24,18 +25,21 @@ public class GameService {
     CategoryValueRepository categoryValueRepository;
 
     public ResponseEntity<String> addGame(String gameName, List<GameRequest.CategoryRequest> categories){
-        Game game = new Game(gameName);
-        gameRepository.save(game);
-        for(GameRequest.CategoryRequest categoryRequest: categories){
-            Category category = new Category(categoryRequest.getCategory(),game);
-            String[] valueNames = categoryRequest.getValues().split(",");
-            categoryRepository.save(category);
-            for(String valueName : valueNames){
-                CategoryValue categoryValue = new CategoryValue(valueName, category);
-                categoryValueRepository.save(categoryValue);
+        boolean gameExists = gameRepository.existsByName(gameName);
+        if(!gameExists) {
+            Game game = new Game(gameName);
+            gameRepository.save(game);
+            for (GameRequest.CategoryRequest categoryRequest : categories) {
+                Category category = new Category(categoryRequest.getCategory(), game);
+                String[] valueNames = categoryRequest.getValues().split(",");
+                categoryRepository.save(category);
+                for (String valueName : valueNames) {
+                    CategoryValue categoryValue = new CategoryValue(valueName, category);
+                    categoryValueRepository.save(categoryValue);
+                }
             }
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else throw new GameAlreadyCreatedException("Game has already been created");
     }
 
     public ResponseEntity<List<Category>> getGameCategories(String gameName){

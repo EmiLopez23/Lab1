@@ -10,4 +10,5 @@ import java.util.Optional;
 
 public interface GameRepository extends JpaRepository<Game,Long> {
     Game findGameByName(String name);
+    boolean existsByName(String name);
 }
