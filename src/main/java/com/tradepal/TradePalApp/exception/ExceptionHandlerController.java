@@ -39,4 +39,14 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
+    @ExceptionHandler(UserNotAdminException.class)
+    public ResponseEntity<String> handleUserNotAdminException(UserNotAdminException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(GameAlreadyCreatedException.class)
+    public ResponseEntity<String> handleGameAlreadyCreatedException(GameAlreadyCreatedException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
 }
