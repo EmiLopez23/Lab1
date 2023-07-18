@@ -32,6 +32,15 @@ public class ItemController {
         return itemService.addItem(name,gameName, valuesId,img);
     }
 
+    @PostMapping("item/addAsJSON")
+    public ResponseEntity<String> addItemJSON(@RequestParam("name") String name, @RequestParam("game")String gameName,@RequestParam("valuesId") List<Long> valuesId, @RequestParam("img") String img){
+        return itemService.addItemJSON(name,gameName, valuesId,img);
+    }
+
+    @PostMapping("item/addImage")
+    public ResponseEntity<String> addImage(@RequestParam("img") MultipartFile img){
+        return itemService.uploadImg(img);
+    }
 
     @GetMapping("all")
     public ResponseEntity<?> getAll(){

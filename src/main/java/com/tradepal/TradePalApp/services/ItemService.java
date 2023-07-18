@@ -51,5 +51,27 @@ public class ItemService {
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+    public ResponseEntity<String> uploadImg(MultipartFile img){
+        try{
+            byte[] bytesImg = img.getBytes();
+            String imgName = img.getOriginalFilename();
+            Path filePath = Path.of("../resources",imgName);
+            Files.write(filePath,bytesImg);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error while uploading Image",e);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<String> addItemJSON(String name, String gameName, List<Long> valuesName, String img){
+        Game game = gameRepository.findGameByName(gameName);
+        Item newItem = new Item(name, game);
+        List<CategoryValue> values = categoryValueRepository.findAllById(valuesName);
+        newItem.getCategoryValues().addAll(values);
+        newItem.setImgPath(img);
+        itemRepository.save(newItem);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
 }
