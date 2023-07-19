@@ -49,4 +49,8 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
+    @ExceptionHandler(TradeInviteAlreadySentException.class)
+    public ResponseEntity<String> handleTradeInviteAlreadySentException(TradeInviteAlreadySentException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

@@ -34,9 +34,13 @@ public class AdminService {
                 User user = report.getSubject();
                 user.setBanned(true);
                 userRepository.save(user);
+                List<Report> reports = reportRepository.getReportsBySubject(user);
+                reports.forEach(report1 -> report1.setResolved(true));
+                reportRepository.saveAll(reports);
+            }else {
+                report.setResolved(true);
+                reportRepository.save(report);
             }
-            report.setResolved(true);
-            reportRepository.save(report);
             return new ResponseEntity<>(HttpStatus.OK);
         } else throw new UserNotAdminException("User is not an Admin");
     }

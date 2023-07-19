@@ -84,7 +84,7 @@ public class PostService {
         List<Post> posts = postRepository.findAll();
         List<PostResponse> postsResponse = new ArrayList<>();
         for (Post post : posts) {
-            if(post.isActive()) {
+            if(post.isActive() && !post.getUser().isBanned()) {
                 postsResponse.add(new PostResponse(post));
             }
         }

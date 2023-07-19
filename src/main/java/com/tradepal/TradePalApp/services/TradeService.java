@@ -4,6 +4,7 @@ package com.tradepal.TradePalApp.services;
 import com.tradepal.TradePalApp.exception.NotEnoughItemsException;
 import com.tradepal.TradePalApp.exception.PostNotActive;
 import com.tradepal.TradePalApp.exception.TradeInviteAlreadyAccepted;
+import com.tradepal.TradePalApp.exception.TradeInviteAlreadySentException;
 import com.tradepal.TradePalApp.model.*;
 import com.tradepal.TradePalApp.repository.*;
 import com.tradepal.TradePalApp.requests.ReviewRequest;
@@ -45,10 +46,12 @@ public class TradeService {
     public ResponseEntity<String> createTradeInvite(Long interestedId, Long postId){
         User interested = userRepository.getReferenceById(interestedId);
         Post post = postRepository.getReferenceById(postId);
-        TradeInvite tradeInvite = new TradeInvite(post, interested);
-        tradeInviteRepository.save(tradeInvite);
-        mailService.sendInviteSentMail(post.getUser().getEmail(), post.getUser().getUsername(), interested.getUsername());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if(!tradeInviteRepository.existsByRequesterAndPost(interested, post)) {
+            TradeInvite tradeInvite = new TradeInvite(post, interested);
+            tradeInviteRepository.save(tradeInvite);
+            mailService.sendInviteSentMail(post.getUser().getEmail(), post.getUser().getUsername(), interested.getUsername());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else throw new TradeInviteAlreadySentException("User has already sent an invite to this post");
     }
 
     public ResponseEntity<String> confirmTrade(Long tradeInviteId, ReviewRequest review){
