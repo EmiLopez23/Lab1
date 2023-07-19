@@ -1,5 +1,6 @@
 package com.tradepal.TradePalApp.services;
 
+import com.tradepal.TradePalApp.exception.GameDoesNotExistException;
 import com.tradepal.TradePalApp.model.CategoryValue;
 import com.tradepal.TradePalApp.model.Game;
 import com.tradepal.TradePalApp.model.Item;
@@ -66,12 +67,14 @@ public class ItemService {
 
     public ResponseEntity<String> addItemJSON(String name, String gameName, List<Long> valuesName, String img){
         Game game = gameRepository.findGameByName(gameName);
-        Item newItem = new Item(name, game);
-        List<CategoryValue> values = categoryValueRepository.findAllById(valuesName);
-        newItem.getCategoryValues().addAll(values);
-        newItem.setImgPath(img);
-        itemRepository.save(newItem);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if(game != null) {
+            Item newItem = new Item(name, game);
+            List<CategoryValue> values = categoryValueRepository.findAllById(valuesName);
+            newItem.getCategoryValues().addAll(values);
+            newItem.setImgPath(img);
+            itemRepository.save(newItem);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else throw new GameDoesNotExistException("Game does not exist");
     }
 
 }

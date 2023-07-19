@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface UserRatingRepository extends JpaRepository<UserRating, Long> {
 
 
     @Query("SELECT AVG(ur.rating) FROM UserRating ur WHERE ur.subject = :user")
-    int getUserRatingAverage(@Param("user") User user);
+    Optional<Integer> getUserRatingAverage(@Param("user") User user);
 }

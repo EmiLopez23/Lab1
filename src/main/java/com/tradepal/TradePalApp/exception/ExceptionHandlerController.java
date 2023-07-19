@@ -53,4 +53,9 @@ public class ExceptionHandlerController {
     public ResponseEntity<String> handleTradeInviteAlreadySentException(TradeInviteAlreadySentException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(GameDoesNotExistException.class)
+    public ResponseEntity<String> handleGameDoesNotExistException(GameDoesNotExistException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

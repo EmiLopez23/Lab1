@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -69,7 +70,13 @@ public class UserService {
 
     public ResponseEntity<?> getProfile(String username) {
         User user = userRepository.findUserByUsername(username);
-        int rating = userRatingRepository.getUserRatingAverage(user);
+        Optional<Integer> ratingAvg = userRatingRepository.getUserRatingAverage(user);
+        int rating;
+        if(ratingAvg.isEmpty()){
+            rating = 0;
+        }else {
+            rating = ratingAvg.get();
+        }
         List<Post> posts = postRepository.getPostsByUserAndActive(user, true);
         List<TradeInvite> tradeInvites = tradeInviteRepository.getUserConfirmedTradeInvites(user.getId());
         List<UserComment> userComments = userCommentRepository.findUserCommentsBySubject(user);
