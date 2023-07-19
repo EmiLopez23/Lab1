@@ -47,6 +47,14 @@ public class TradeService {
         User interested = userRepository.getReferenceById(interestedId);
         Post post = postRepository.getReferenceById(postId);
         if(!tradeInviteRepository.existsByRequesterAndPost(interested, post)) {
+            for (PostItem postItem : post.getTradeItems()){
+                if (postItem.getTradeDirection() == TradeDirection.WANTED){
+                    Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), interested.getInventory());
+                    if (userItem.isEmpty() || userItem.get().getQuantity() < postItem.getQuantity()) {
+                        throw new NotEnoughItemsException("Not enough Items to send Invite");
+                    }
+                }
+            }
             TradeInvite tradeInvite = new TradeInvite(post, interested);
             tradeInviteRepository.save(tradeInvite);
             mailService.sendInviteSentMail(post.getUser().getEmail(), post.getUser().getUsername(), interested.getUsername());
@@ -70,6 +78,8 @@ public class TradeService {
                 userService.createReview(post.getUser(), tradeInvite.getRequester(), review.getRating(), review.getContent());
                 postService.checkPostRequirements(tradeInvite.getRequester());
                 postService.checkPostRequirements(tradeInvite.getPost().getUser());
+                checkTradeInviteRequirements(tradeInvite.getRequester());
+                checkTradeInviteRequirements(tradeInvite.getPost().getUser());
                 mailService.sendInviteAcceptedMail(tradeInvite.getRequester().getEmail(), tradeInvite.getRequester().getUsername(), post.getUser().getUsername());
                 return new ResponseEntity<>(HttpStatus.OK);
             }else throw new PostNotActive("Post Is Not Active");
@@ -141,5 +151,21 @@ public class TradeService {
         userService.createReview(tradeInvite.getRequester(), tradeInvite.getPost().getUser(), review.getRating(), review.getContent());
         return new ResponseEntity<>(HttpStatus.OK);
         }else throw new TradeInviteAlreadyAccepted("TradeInvite already Completed");
+    }
+
+    public void checkTradeInviteRequirements(User user){
+        List<TradeInvite> userInvites = tradeInviteRepository.getTradeInviteByRequesterAndAndStatus(user, TradeStatus.SENT);
+        for (TradeInvite invite : userInvites){
+            Post post = invite.getPost();
+            for (PostItem postItem : post.getTradeItems()) {
+                if(postItem.getTradeDirection() == TradeDirection.WANTED) {
+                    Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), user.getInventory());
+                    if (userItem.isEmpty() || userItem.get().getQuantity() < postItem.getQuantity()) {
+                        tradeInviteRepository.delete(invite);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

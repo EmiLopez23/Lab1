@@ -1,7 +1,6 @@
 package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.repository.ItemRepository;
-import com.tradepal.TradePalApp.requests.ImageFile;
 import com.tradepal.TradePalApp.requests.ItemRequest;
 import com.tradepal.TradePalApp.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;

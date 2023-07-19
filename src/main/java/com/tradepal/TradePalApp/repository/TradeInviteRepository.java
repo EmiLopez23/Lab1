@@ -19,4 +19,6 @@ public interface TradeInviteRepository extends JpaRepository<TradeInvite, Long> 
     List<TradeInvite> getUserConfirmedTradeInvites(@Param("userId") Long userId);
 
     boolean existsByRequesterAndPost(User requester, Post post);
+
+    List<TradeInvite> getTradeInviteByRequesterAndAndStatus(User requester, TradeStatus status);
 }

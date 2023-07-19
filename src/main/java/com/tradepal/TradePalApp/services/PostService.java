@@ -103,11 +103,13 @@ public class PostService {
         for(Post post : posts){
             List<PostItem> postItems = post.getTradeItems();
             for (PostItem postItem : postItems){
-                Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), user.getInventory());
-                if (userItem.isEmpty() || userItem.get().getQuantity() < postItem.getQuantity()){
-                    post.setActive(false);
-                    postRepository.save(post);
-                    break;
+                if(postItem.getTradeDirection() == TradeDirection.OFFERED) {
+                    Optional<UserItem> userItem = userItemRepository.findUserItemByItemAndInventory(postItem.getItem(), user.getInventory());
+                    if (userItem.isEmpty() || userItem.get().getQuantity() < postItem.getQuantity()) {
+                        post.setActive(false);
+                        postRepository.save(post);
+                        break;
+                    }
                 }
             }
         }
