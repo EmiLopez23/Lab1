@@ -9,9 +9,9 @@ public class ItemRequest {
     String name;
     String game;
     List<Long> valuesId;
-    MultipartFile img;
+    String img;
 
-    public ItemRequest(String name, String game, List<Long> valuesId, MultipartFile img) {
+    public ItemRequest(String name, String game, List<Long> valuesId, String img) {
         this.name = name;
         this.game = game;
         this.valuesId = valuesId;
@@ -31,7 +31,7 @@ public class ItemRequest {
         return valuesId;
     }
 
-    public MultipartFile getImg() {
+    public String getImg() {
         return img;
     }
 }
