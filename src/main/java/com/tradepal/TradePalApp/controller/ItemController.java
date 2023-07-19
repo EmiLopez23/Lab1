@@ -1,6 +1,7 @@
 package com.tradepal.TradePalApp.controller;
 
 import com.tradepal.TradePalApp.repository.ItemRepository;
+import com.tradepal.TradePalApp.requests.ImageFile;
 import com.tradepal.TradePalApp.requests.ItemRequest;
 import com.tradepal.TradePalApp.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,11 @@ public class ItemController {
     }
 
     @PostMapping("item/addAsJSON")
-    public ResponseEntity<String> addItemJSON(@RequestParam("name") String name, @RequestParam("game")String gameName,@RequestParam("valuesId") List<Long> valuesId, @RequestParam("img") String img){
-        return itemService.addItemJSON(name,gameName, valuesId,img);
+    public ResponseEntity<String> addItemJSON(@RequestBody ItemRequest itemRequest){
+        return itemService.addItemJSON(itemRequest.getName(),itemRequest.getGame(),itemRequest.getValuesId(), itemRequest.getImg());
     }
 
-    @PostMapping("item/addImage")
+    @PostMapping(value="item/addImage",consumes={"multipart/form-data"})
     public ResponseEntity<String> addImage(@RequestParam("img") MultipartFile img){
         return itemService.uploadImg(img);
     }
